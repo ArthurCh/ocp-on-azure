@@ -97,7 +97,7 @@ i=1
 while [ $i -le $1 ]
 do
   echo "Creating OCP Node VM $i..."
-  az vm create -g $RG_NAME --name "node$i.$OCP_DOMAIN_SUFFIX" --location westus --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_TYPE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+  az vm create -g $RG_NAME --name "node$i.$OCP_DOMAIN_SUFFIX" --location westus --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_TYPE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
   i=$(( $i + 1 ))
 done
 
