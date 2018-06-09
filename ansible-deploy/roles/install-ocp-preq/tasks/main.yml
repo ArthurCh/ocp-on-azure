@@ -1,0 +1,48 @@
+---
+# Tasks for registering VM with RH subscription and installing pre-requisite s/w
+
+- name: Register VM
+  command: subscription-manager register --username={{ rh_account_name }} --password={{ rh_account_pwd }}
+
+- name: Pull latest subscription from RHSM
+  command: subscription-manager refresh
+
+- name: Attach subscription pool-id
+  command: subscription-manager attach --pool={{ pool_id }}
+
+- name: Disable all enabled RHSM repositories
+  command: subscription-manager repos --disable="*"
+
+- name: Enable repositories for OCP
+  command: subscription-manager repos \
+    --enable="rhel-7-server-rpms" \
+    --enable="rhel-7-server-extras-rpms" \
+    --enable="rhel-7-server-ose-{{ ocp_ver }}-rpms" \
+    --enable="rhel-7-fast-datapath-rpms" \
+    --enable="rhel-7-server-ansible-2.4-rpms"
+
+- name: Install required utilities and tools
+  command: yum install wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
+
+- name: Run yum update
+  command: yum -y update
+
+- name: Install OpenShift utilities
+  command: yum install atomic-openshift-utils
+
+- name: Install docker
+  command: yum install docker-{{ docker_ver }}
+
+- name: Check docker version
+  command: docker version
+
+- name: Enable docker to start at boot-time
+  command: systemctl enable docker
+
+- name: Reboot VM
+  shell: nohup bash -c "sleep 2s && shutdown -r now" &
+
+- name: Wait for machine to come back up
+  wait_for_connection:
+    timeout: 240
+    delay: 20

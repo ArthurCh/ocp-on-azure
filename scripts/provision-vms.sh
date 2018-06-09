@@ -1,0 +1,103 @@
+#!/bin/bash
+
+if [ $# -le 0 ]; then
+  echo -e "\nUsage: provision-vms.sh <NO. of OCP Nodes>"
+  echo -e "Missing argument : No. of OCP nodes!"
+  exit 1
+fi
+
+# Configure the variables below
+RG_NAME="rh-ocp39-rg"
+IMAGE_TYPE_MASTER="Standard_B2ms"
+IMAGE_TYPE_NODE="Standard_B2ms"
+IMAGE_TYPE_INFRA="Standard_B2ms"
+VM_IMAGE="RedHat:RHEL:7.4:7.4.2018010506"
+OCP_DOMAIN_SUFFIX="example.com"
+
+echo "Provisioning Azure resources for OpenShift Cluster..."
+
+# Create Azure resource group
+echo "Creating Azure resource group..."
+az group create --name $RG_NAME --location westus
+
+# Create the VNET and Subnet
+echo "Creating the VNET and Subnet..."
+az network vnet create --resource-group $RG_NAME --name ocpVnet --address-prefix 192.168.0.0/16 --subnet-name ocpSubnet --subnet-prefix 192.168.122.0/24
+
+# Create the public ip for the bastion host
+echo "Creating the public ip for the bastion host..."
+az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocpbastion
+
+# Create the public ip for the ocp master host
+echo "Creating the public ip for the OCP master host..."
+az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocpmaster
+
+# Create the public ip for the ocp infra host
+echo "Creating the public ip for the OCP infra host..."
+az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocpinfra
+
+# Create the network security group for bastion host
+echo "Creating the network security group for bastion host..."
+az network nsg create -g $RG_NAME --name ocpBastionSecurityGroup
+
+# Create the network security group for ocp master
+echo "Creating the network security group for ocp master..."
+az network nsg create -g $RG_NAME --name ocpMasterSecurityGroup
+
+# Create the network security group for ocp infra
+echo "Creating the network security group for ocp infra. node..."
+az network nsg create -g $RG_NAME --name ocpInfraSecurityGroup
+
+# Create the NSG rule for SSH access for bastion host
+echo "Creating the NSG rule for SSH access for bastion host..."
+az network nsg rule create -g $RG_NAME --nsg-name ocpBastionSecurityGroup --name ocpSecurityGroupRuleSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow
+
+# Create the NSG rule for SSH access for master node
+echo "Creating the NSG rule for SSH access for master node..."
+az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name ocpSecurityGroupRuleSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow
+echo "Creating the NSG rule for API access for master node..."
+az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name ocpSecurityGroupRuleAPI --protocol tcp --priority 900 --destination-port-range 8443 --access allow
+
+echo "Creating the NSG rule for APP access for infra node..."
+az network nsg rule create -g $RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleAppSSL --protocol tcp --priority 1000 --destination-port-range 443 --access allow
+az network nsg rule create -g $RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleApp --protocol tcp --priority 2000 --destination-port-range 80 --access allow
+
+# Create the NIC for Bastion host
+echo "Creating NIC for Bastion Host..."
+az network nic create -g $RG_NAME --name bastionNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
+
+# Create the NIC for OCP master host
+echo "Creating NIC for OCP master Host..."
+az network nic create -g $RG_NAME --name masterNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
+
+# Create the NIC for OCP infra host
+echo "Creating NIC for OCP infra Host..."
+az network nic create -g $RG_NAME --name infraNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
+
+# Create the availability set
+echo "Creating the availability set..."
+az vm availability-set create -g $RG_NAME --name ocpAvailabilitySet
+
+# Create the Bastion Host VM
+echo "Creating the bastion host VM..."
+az vm create -g $RG_NAME --name bastion.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics bastionNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+
+# Create the OCP Master VM
+echo "Creating the OCP Master VM..."
+az vm create -g $RG_NAME --name ocpmaster.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics masterNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+
+# Create the OCP Infra VM
+echo "Creating the OCP Infra VM..."
+az vm create -g $RG_NAME --name ocpinfra.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_TYPE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+
+# Create the OCP Node VMs...
+echo "OCP node count=[$1]..."
+i=1
+while [ $i -le $1 ]
+do
+  echo "Creating OCP Node VM $i..."
+  az vm create -g $RG_NAME --name "node$i.$OCP_DOMAIN_SUFFIX" --location westus --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_TYPE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+  i=$(( $i + 1 ))
+done
+
+echo "OCP Infrastructure creation completed OK."

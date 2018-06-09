@@ -1,0 +1,7 @@
+# Define variables for OCP pre-requisities
+
+rh_account_name: garadha-msft
+rh_account_pwd: 1gradhakr
+pool_id: 8a85f9875f7334a1015f74b576037793
+ocp_ver: 3.9
+docker_ver: 1.13.1
