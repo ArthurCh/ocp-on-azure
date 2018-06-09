@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ $# -le 0 ]; then
   echo -e "\nUsage: provision-vms.sh <NO. of OCP Nodes>"
