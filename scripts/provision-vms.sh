@@ -85,11 +85,11 @@ az vm create -g $RG_NAME --name bastion.$OCP_DOMAIN_SUFFIX --location westus --a
 
 # Create the OCP Master VM
 echo "Creating the OCP Master VM..."
-az vm create -g $RG_NAME --name ocpmaster.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics masterNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name ocp-master.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics masterNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Infra VM
 echo "Creating the OCP Infra VM..."
-az vm create -g $RG_NAME --name ocpinfra.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_TYPE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name ocp-infra.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_TYPE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Node VMs...
 echo "OCP node count=[$1]..."
@@ -97,7 +97,7 @@ i=1
 while [ $i -le $1 ]
 do
   echo "Creating OCP Node VM $i..."
-  az vm create -g $RG_NAME --name "node$i.$OCP_DOMAIN_SUFFIX" --location westus --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_TYPE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
+  az vm create -g $RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location westus --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_TYPE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
   i=$(( $i + 1 ))
 done
 
