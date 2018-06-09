@@ -2,8 +2,8 @@
 set -e
 
 if [ $# -le 0 ]; then
-  echo -e "\nUsage: provision-vms.sh <NO. of OCP Nodes>"
-  echo -e "Missing argument : No. of OCP nodes!"
+  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes>"
+  echo -e "\tMissing argument : No. of OCP nodes!\n"
   exit 1
 fi
 
