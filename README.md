@@ -4,6 +4,7 @@
 1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the URL of your fork when cloning this repository.  Review and update the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
+-------- | ------------- | -----------
 RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
 IMAGE_TYPE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master nodes
 IMAGE_TYPE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
@@ -18,7 +19,7 @@ After updating `provision-vms.sh`, run the script in a terminal window.
 $ ./scripts/provision-vms.sh
 ```
 
-2. Login to the Bastion host VM. Install ansible and git.
+2. Login to the Bastion host VM. Install *Ansible* and *Git*.
 ```
 # Login to Bastion host via SSH.  Substitute the IP Address of the DNS name of the Bastion host.
 $ ssh ocpuser@<Public IP Address / DNS name of Bastion Host>
