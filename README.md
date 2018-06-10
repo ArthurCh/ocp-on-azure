@@ -1,6 +1,22 @@
 ## Automate deployment of Redhat OpenShift on Microsoft Azure.
 
-1. Review and run the script `scripts/provision-vms.sh`.
+### A] Deploy a *non-HA* OpenShift Cluster
+1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the URL of your fork when cloning this repository.  Review and update the script `scripts/provision-vms.sh` as necessary.  See below.
+
+VAR NAME | DEFAULT VALUE | DESCRIPTION
+RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
+IMAGE_TYPE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master nodes
+IMAGE_TYPE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
+IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
+VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
+OCP_DOMAIN_SUFFIX | example.com | Domain suffix for hostnames
+
+After updating `provision-vms.sh`, run the script in a terminal window.
+```
+# Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 3 below.
+# Run the script 'scripts/provision-vms.sh'
+$ ./scripts/provision-vms.sh
+```
 
 2. Login to the Bastion host VM. Install ansible and git.
 ```
