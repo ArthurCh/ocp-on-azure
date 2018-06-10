@@ -38,8 +38,11 @@ $ cd ocp-on-azure
 $ ansible -i hosts all -m ping
 ```
 
-7. Run syntax check on playbook.  If there are any errors, fix them before proceeding.
+7. Switch to sub-directory `ansible-deploy` and then run syntax check on playbook.  If there are any errors, fix them before proceeding.
 ```
+# Switch to sub-directory 'ansible-deploy'
+$ cd ansible-deploy
+#
 # Check the syntax of commands in the playbook
 $ ansible-playbook -i hosts install.yml --syntax-check
 ```
@@ -47,5 +50,5 @@ $ ansible-playbook -i hosts install.yml --syntax-check
 8. Run the Ansible playbook `install.yml`.
 ```
 # Run the Ansible playbook
-$ ansible-playbook -i hosts install.yml
+$ ansible-playbook -i hosts -vv install.yml
 ```
