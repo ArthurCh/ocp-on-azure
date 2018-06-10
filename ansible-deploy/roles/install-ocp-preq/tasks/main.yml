@@ -27,7 +27,7 @@
 
 - name: Install required utilities and tools
   yum:
-    name: yum install wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
+    name: wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
     state: latest
 
 - name: Run yum update
