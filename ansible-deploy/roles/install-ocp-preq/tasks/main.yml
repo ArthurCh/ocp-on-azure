@@ -1,17 +1,20 @@
 ---
 # Tasks for registering VM with RH subscription and installing pre-requisite s/w
 
-- name: Register VM
+- name: Register RHEL using subscription manager
   command: subscription-manager register --username={{ rh_account_name }} --password={{ rh_account_pwd }}
+  ignore_errors: yes
 
 - name: Pull latest subscription from RHSM
   command: subscription-manager refresh
 
 - name: Attach subscription pool-id
   command: subscription-manager attach --pool={{ pool_id }}
+  ignore_errors: yes
 
 - name: Disable all enabled RHSM repositories
   command: subscription-manager repos --disable="*"
+  ignore_errors: yes
 
 - name: Enable repositories for OCP
   command: subscription-manager repos \
@@ -20,6 +23,7 @@
     --enable="rhel-7-server-ose-{{ ocp_ver }}-rpms" \
     --enable="rhel-7-fast-datapath-rpms" \
     --enable="rhel-7-server-ansible-2.4-rpms"
+  ignore_errors: yes
 
 - name: Install required utilities and tools
   yum:
