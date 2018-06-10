@@ -45,9 +45,6 @@
     name: docker-{{ docker_ver }}
     state: present
 
-- name: Check docker version
-  command: docker version
-
 - name: Enable docker to start at boot-time
   command: systemctl enable docker
 
@@ -58,3 +55,6 @@
   wait_for_connection:
     timeout: 240
     delay: 20
+
+- name: Check docker version
+  command: docker version
