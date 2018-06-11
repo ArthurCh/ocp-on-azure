@@ -16,7 +16,7 @@ IMAGE_TYPE_MASTER="Standard_B2ms"
 IMAGE_TYPE_NODE="Standard_B2ms"
 IMAGE_TYPE_INFRA="Standard_B2ms"
 VM_IMAGE="RedHat:RHEL:7.4:7.4.2018010506"
-OCP_DOMAIN_SUFFIX="devcluster.com"
+OCP_DOMAIN_SUFFIX="devcls.com"
 
 echo "Provisioning Azure resources for OpenShift Cluster..."
 
