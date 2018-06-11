@@ -45,13 +45,13 @@ $ cd
 # Clone your GitHub repository.
 $ git clone https://github.com/<Your-GitHub-Account>/ocp-on-azure.git
 #
-$ Switch to the 'ocp-on-azure' directory
-$ cd ocp-on-azure
+$ Switch to the 'ocp-on-azure/ansible-deploy' directory
+$ cd ocp-on-azure/ansible-deploy/
 ```
 
-4. Update `hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
+4. Update `scripts/hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
 
-5. Review `ansible-deploy/group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
+5. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
 
 6. Check if Ansible is able to connect to all OpenShift nodes.
 ```
