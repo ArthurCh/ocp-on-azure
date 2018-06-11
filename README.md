@@ -87,9 +87,9 @@ ocp-master.devcls.com      : ok=14   changed=12   unreachable=0    failed=0
 ocp-node1.devcls.com       : ok=14   changed=7    unreachable=0    failed=0
 ```
 
-10. Login via SSH to the OpenShift **master** node.  The OpenShift installer (Ansible playbook) will be run on this OpenShift master node.  Make sure you are able to login in to all nodes using SSH.  In order to proceed with OpenShift installation -
-- All nodes should be resolvable thru their DNS aliases
-- Passwordless **sudo** access should be enabled on all nodes
+10. Login via SSH to the OpenShift **master** node.  The OpenShift installer (Ansible playbook) will be run on this OpenShift master node.  Make sure you are able to login in to all nodes using SSH.  Before proceeding with OpenShift installation, check the following -
+- All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
+- Passwordless **sudo** access should be configured on all nodes (VMs)
 
 11. Download the Ansible hosts (**ocp-hosts**) file from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
 ```
@@ -100,7 +100,7 @@ Review the **ocp-hosts** file and update the hostnames for the OpenShift master,
 
 12. Run the Ansible OpenShift installer playbooks.
 ```
-# Run the **prerequisites.yml' playbook
+# Run the 'prerequisites.yml' playbook
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 # Run the 'deploy_cluster.yml' playbook
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
