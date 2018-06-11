@@ -91,12 +91,12 @@ ocp-node1.devcls.com       : ok=14   changed=7    unreachable=0    failed=0
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
 
-11. Download the Ansible hosts (**ocp-hosts**) file from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
+11. Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
 ```
-# Download the ansible hosts file. Substitute your GitHub account name in the command below.
+# Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
 $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
 ```
-Review the **ocp-hosts** file and update the hostnames for the OpenShift master, infrastructure and application nodes.
+Review the **ocp-hosts** file and update the hostnames for the OpenShift master, infrastructure and application nodes (VMs).
 
 12. Run the Ansible OpenShift installer playbooks.
 ```
