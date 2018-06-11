@@ -4,6 +4,7 @@
 [OSEv3:children]
 masters
 nodes
+etcd
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
@@ -17,19 +18,26 @@ openshift_deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 openshift_clock_enabled=true
 
-openshift_master_default_subdomain=ocp39.cloudapps.azure.com
-openshift_hosted_logging_deploy=true
-openshift_hosted_metrics_deploy=true
+openshift_master_default_subdomain=ocp39.devcls.local
+openshift_metrics_install_metrics=true
+openshift_logging_install_logging=true
+# Variable below are deprecated in v3.9
+#openshift_hosted_logging_deploy=true
+#openshift_hosted_metrics_deploy=true
 
 # Enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 
 # Host group for masters
 [masters]
-ocp-master.devcluster.com
+ocp-master.devcls.com
+
+# Host group for etcd
+[etcd]
+ocp-master.devcls.com
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.devcluster.com openshift_schedulable=true openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-infra.devcluster.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
-ocp-node1.devcluster.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-master.devcls.com openshift_schedulable=true openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-infra.devcls.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
