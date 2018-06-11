@@ -10,7 +10,7 @@ IMAGE_TYPE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master no
 IMAGE_TYPE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
-OCP_DOMAIN_SUFFIX | example.com | Domain suffix for hostnames
+OCP_DOMAIN_SUFFIX | westus.cloudapp.azure.com | Domain suffix for hostnames
 
 After updating `provision-vms.sh`, run the script in a terminal window.
 ```
