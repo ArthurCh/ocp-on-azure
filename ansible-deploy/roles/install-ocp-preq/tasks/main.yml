@@ -46,7 +46,10 @@
     state: present
 
 - name: Enable docker to start at boot-time
-  command: systemctl enable docker
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no
 
 - name: Reboot VM
   shell: nohup bash -c "sleep 2s && shutdown -r now" &
