@@ -12,14 +12,18 @@ IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
 OCP_DOMAIN_SUFFIX | westus.cloudapp.azure.com | Domain suffix for hostnames
 
-After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure resources required to deploy the OpenShift cluster.
+After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
 # Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 3 below.
 # Run the script 'scripts/provision-vms.sh'
 $ ./scripts/provision-vms.sh
 ```
+The script should print the following message upon successful creation of all resources.
+```
+All OCP infrastructure resources created OK.
+```
 
-2. Login to the Bastion host VM. Install *Ansible* and *Git*.
+2. Login to the Bastion host VM using SSH (Terminal window). Install *Ansible* and *Git*.
 ```
 # Login to Bastion host via SSH.  Substitute the IP Address of the DNS name of the Bastion host.
 $ ssh ocpuser@<Public IP Address / DNS name of Bastion Host>
