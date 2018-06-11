@@ -1,4 +1,4 @@
 [ocp-servers]
-ocp-master.westus.cloudapp.azure.com
-ocp-infra.westus.cloudapp.azure.com
-ocp-node1.westus.cloudapp.azure.com
+ocp-master.devcluster.com
+ocp-infra.devcluster.com
+ocp-node1.devcluster.com
