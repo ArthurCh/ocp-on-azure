@@ -49,7 +49,7 @@ $ Switch to the 'ocp-on-azure/ansible-deploy' directory
 $ cd ocp-on-azure/ansible-deploy/
 ```
 
-4. Update `scripts/hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
+4. Update `hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
 
 5. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
 
