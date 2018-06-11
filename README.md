@@ -10,7 +10,7 @@ IMAGE_TYPE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master no
 IMAGE_TYPE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
-OCP_DOMAIN_SUFFIX | westus.cloudapp.azure.com | Domain suffix for hostnames
+OCP_DOMAIN_SUFFIX | ocpdev.com | Domain suffix for hostnames
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
@@ -55,7 +55,7 @@ $ cd ocp-on-azure/ansible-deploy/
 
 6. Check if Ansible is able to connect to all OpenShift nodes.
 ```
-# Ping all OpenShift nodes.  You current directory should be 'ocp-on-azure' directory.
+# Ping all OpenShift nodes.  You current directory should be 'ocp-on-azure/ansible-deploy' directory.
 $ ansible -i hosts all -m ping
 ```
 
