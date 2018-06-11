@@ -15,10 +15,10 @@ OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
 # Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 3 below.
-# Run the script 'scripts/provision-vms.sh'
-$ ./scripts/provision-vms.sh
+# Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes.
+$ ./scripts/provision-vms.sh <no. of nodes>
 ```
-The script should print the following message upon successful creation of all resources.
+The script should print the following message upon successful creation of all infrastructure resources.
 ```
 All OCP infrastructure resources created OK.
 ```
