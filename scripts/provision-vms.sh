@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# ID06102018: Created by ganesh.radhakrishnan@microsoft.com
+
 set -e
 
 if [ $# -le 0 ]; then
@@ -13,7 +16,7 @@ IMAGE_TYPE_MASTER="Standard_B2ms"
 IMAGE_TYPE_NODE="Standard_B2ms"
 IMAGE_TYPE_INFRA="Standard_B2ms"
 VM_IMAGE="RedHat:RHEL:7.4:7.4.2018010506"
-OCP_DOMAIN_SUFFIX="example.com"
+OCP_DOMAIN_SUFFIX="westus.cloudapp.azure.com"
 
 echo "Provisioning Azure resources for OpenShift Cluster..."
 
@@ -27,15 +30,15 @@ az network vnet create --resource-group $RG_NAME --name ocpVnet --address-prefix
 
 # Create the public ip for the bastion host
 echo "Creating the public ip for the bastion host..."
-az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocpbastion
+az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocp-bastion
 
 # Create the public ip for the ocp master host
 echo "Creating the public ip for the OCP master host..."
-az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocpmaster
+az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocp-master
 
 # Create the public ip for the ocp infra host
 echo "Creating the public ip for the OCP infra host..."
-az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocpinfra
+az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocp-infra
 
 # Create the network security group for bastion host
 echo "Creating the network security group for bastion host..."
@@ -81,7 +84,7 @@ az vm availability-set create -g $RG_NAME --name ocpAvailabilitySet
 
 # Create the Bastion Host VM
 echo "Creating the bastion host VM..."
-az vm create -g $RG_NAME --name bastion.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics bastionNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name ocp-bastion.$OCP_DOMAIN_SUFFIX --location westus --availability-set ocpAvailabilitySet --nics bastionNIC --image $VM_IMAGE --size $IMAGE_TYPE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Master VM
 echo "Creating the OCP Master VM..."

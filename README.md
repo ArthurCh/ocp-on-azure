@@ -1,7 +1,7 @@
 ## Automate deployment of Redhat OpenShift on Microsoft Azure.
 
 ### A] Deploy a *non-HA* OpenShift Cluster
-1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the URL of your fork when cloning this repository.  Review and update the script `scripts/provision-vms.sh` as necessary.  See below.
+1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
@@ -69,3 +69,5 @@ $ ansible-playbook -i hosts install.yml --syntax-check
 # Run the Ansible playbook
 $ ansible-playbook -i hosts -vv install.yml
 ```
+
+9. Login via SSH to the OpenShift master node.

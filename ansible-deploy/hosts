@@ -1,2 +1,4 @@
 [ocp-servers]
-192.168.122.4
+ocp-master.westus.cloudapp.azure.com
+ocp-infra.westus.cloudapp.azure.com
+ocp-node1.westus.cloudapp.azure.com
