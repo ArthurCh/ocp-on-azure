@@ -17,7 +17,7 @@ openshift_deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 openshift_clock_enabled=true
 
-openshift_master_default_subdomain=ocp39.westus.cloudapp.azure.com
+openshift_master_default_subdomain=ocpapps.westus.cloudapp.azure.com
 openshift_hosted_logging_deploy=true
 openshift_hosted_metrics_deploy=true
 

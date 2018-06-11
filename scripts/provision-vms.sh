@@ -104,4 +104,4 @@ do
   i=$(( $i + 1 ))
 done
 
-echo "OCP Infrastructure creation completed OK."
+echo "OCP infrastructure resources created."
