@@ -98,7 +98,7 @@ $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/mast
 ```
 Review the **ocp-hosts** file and update the hostnames for the OpenShift master, infrastructure and application nodes (VMs).
 
-12. Run the Ansible OpenShift installer playbooks.
+12. Run the Ansible OpenShift installer playbooks.  The OpenShift installer will run for 30-40 minutes depending upon the *Size* (compute capacity) of the VMs.
 ```
 # Run the 'prerequisites.yml' playbook
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
