@@ -43,7 +43,7 @@ $ git --version
 # Switch to home directory
 $ cd
 # Clone your GitHub repository.
-$ git clone https://github.com/<Your-GitHub-Account>/k8s-springboot-data-rest.git
+$ git clone https://github.com/<Your-GitHub-Account>/ocp-on-azure.git
 #
 $ Switch to the 'ocp-on-azure' directory
 $ cd ocp-on-azure
