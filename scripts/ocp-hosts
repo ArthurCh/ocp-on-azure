@@ -26,10 +26,10 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 # Host group for masters
 [masters]
-ocp-master.westus.cloudapp.azure.com
+ocp-master.devcluster.com
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.westus.cloudapp.azure.com openshift_schedulable=true openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-infra.westus.cloudapp.azure.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
-ocp-node1.westus.cloudapp.azure.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-master.devcluster.com openshift_schedulable=true openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-infra.devcluster.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+ocp-node1.devcluster.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
