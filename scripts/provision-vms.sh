@@ -28,6 +28,10 @@ az group create --name $RG_NAME --location westus
 echo "Creating the VNET and Subnet..."
 az network vnet create --resource-group $RG_NAME --name ocpVnet --address-prefix 192.168.0.0/16 --subnet-name ocpSubnet --subnet-prefix 192.168.122.0/24
 
+# Create a private DNS Zone and register with VNET
+echo "Creating private DNS Zone to resolve IPs in ocpVnet..."
+az network dns zone create -g $RG_NAME --name devcls.local --zone-type private --registration-vnets ocpVnet
+
 # Create the public ip for the bastion host
 echo "Creating the public ip for the bastion host..."
 az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocp-bastion
