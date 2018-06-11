@@ -65,19 +65,22 @@ $ cd ocp-on-azure/ansible-deploy/
 $ ansible -i hosts all -m ping
 ```
 
-8. Switch to sub-directory `ansible-deploy` and then run syntax check on playbook.  If there are any errors, fix them before proceeding.
+8. Run syntax check on ansible playbook.  If there are any errors, fix them before proceeding.
 ```
-# Switch to sub-directory 'ansible-deploy'
+# Ensure you are in sub-directory 'ansible-deploy'.  If not, switch to this directory.
 $ cd ansible-deploy
 #
 # Check the syntax of commands in the playbook
 $ ansible-playbook -i hosts install.yml --syntax-check
 ```
 
-9. Run the Ansible playbook `install.yml`.
+9. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 3 nodes).
 ```
 # Run the Ansible playbook
-$ ansible-playbook -i hosts -vv install.yml
+$ ansible-playbook -i hosts -v install.yml
+```
+For each OpenShift node, the `ansible-playbook` command should provide a count of commands successfully executed (ok), changed and failed. If the number assigned to **failed** is non-zero, then re-run the script until all commands are executed successfully. Sample output pasted below.
+```
 ```
 
 10. Login via SSH to the OpenShift master node.
