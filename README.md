@@ -12,7 +12,7 @@ IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
 OCP_DOMAIN_SUFFIX | westus.cloudapp.azure.com | Domain suffix for hostnames
 
-After updating `provision-vms.sh`, run the script in a terminal window.
+After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure resources required to deploy the OpenShift cluster.
 ```
 # Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 3 below.
 # Run the script 'scripts/provision-vms.sh'
