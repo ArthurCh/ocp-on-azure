@@ -87,7 +87,7 @@ ocp-master.devcls.com      : ok=14   changed=12   unreachable=0    failed=0
 ocp-node1.devcls.com       : ok=14   changed=7    unreachable=0    failed=0
 ```
 
-10. Login via SSH to the OpenShift **master** node.  The OpenShift installer (Ansible playbook) will be run on this OpenShift master node.  Make sure you are able to login in to all nodes using SSH.  Before proceeding with OpenShift installation, check the following -
+10. Login via SSH to the OpenShift **master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  From the master node (VM), make sure you are able to login in to all nodes using SSH.  Before proceeding with OpenShift installation, check the following -
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
 
