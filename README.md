@@ -82,9 +82,10 @@ $ ansible-playbook -i hosts -v install.yml
 The `ansible-playbook` command should provide a count of all commands successfully executed (ok), changed and failed for each OpenShift node. If the number assigned to **failed** is non-zero, then re-run the script until all commands are executed successfully. Sample output pasted below.
 ```
 PLAY RECAP *********************************************************************************************************************************
-ocp-infra.devcls.com       : ok=14   changed=7    unreachable=0    failed=0   
+ocp-infra.devcls.com       : ok=14   changed=12   unreachable=0    failed=0   
 ocp-master.devcls.com      : ok=14   changed=12   unreachable=0    failed=0   
-ocp-node1.devcls.com       : ok=14   changed=7    unreachable=0    failed=0
+ocp-node1.devcls.com       : ok=14   changed=12   unreachable=0    failed=0   
+ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ```
 
 10. Login via SSH to the OpenShift **master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  From the master node (VM), make sure you are able to login in to all nodes using SSH.  Before proceeding with OpenShift installation, check the following -
