@@ -23,6 +23,10 @@ openshift_metrics_install_metrics=true
 openshift_metrics_cassandra_storage_type=emptyDir
 openshift_logging_install_logging=true
 
+# Added these two variables to get past the image pull issue!
+oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+openshift_examples_modify_imagestreams=true
+
 # Variables below are deprecated in v3.9
 #openshift_hosted_logging_deploy=true
 #openshift_hosted_metrics_deploy=true
@@ -40,7 +44,7 @@ ocp-master.devcls.com
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-master.devcls.com openshift_schedulable=True openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 ocp-infra.devcls.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
 ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 ocp-node2.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
