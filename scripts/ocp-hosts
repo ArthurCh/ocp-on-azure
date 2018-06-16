@@ -20,7 +20,7 @@ openshift_clock_enabled=true
 
 openshift_master_default_subdomain=ocp39.devcls.local
 openshift_metrics_install_metrics=true
-openshift_metrics_cassandra_storage_type=emptyDir
+openshift_metrics_cassandra_storage_type=emptydir
 openshift_logging_install_logging=true
 
 # Added these two variables to get past the image pull issue!
