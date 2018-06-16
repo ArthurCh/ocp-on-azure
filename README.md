@@ -12,9 +12,10 @@ $ az extension add --name dns
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
 RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
-IMAGE_TYPE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master nodes
-IMAGE_TYPE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
-IMAGE_TYPE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
+RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
+IMAGE_SIZE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master nodes
+IMAGE_SIZE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
+IMAGE_SIZE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
 OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames
 
