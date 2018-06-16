@@ -40,7 +40,7 @@ ocp-master.devcls.com
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.devcls.com openshift_schedulable=false openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-master.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 ocp-infra.devcls.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
 ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-node2.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
