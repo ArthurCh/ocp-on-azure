@@ -79,7 +79,7 @@ $ ansible-playbook -i hosts install.yml --syntax-check
 # Run the Ansible playbook
 $ ansible-playbook -i hosts -v install.yml
 ```
-The `ansible-playbook` command should provide a count of all commands successfully executed (ok), changed and failed for each OpenShift node. If the number assigned to **failed** is non-zero, then re-run the script until all commands are executed successfully. Sample output pasted below.
+For each OpenShift node (VM), the `ansible-playbook` command should print a count of all tasks successfully executed (ok), changed and failed. If there are any **failed** tasks, re-run the playbook until all tasks are successfully executed on all nodes. Upon successful execution of all playbook tasks on all nodes, the following message will be printed in the output.
 ```
 PLAY RECAP *********************************************************************************************************************************
 ocp-infra.devcls.com       : ok=14   changed=12   unreachable=0    failed=0   
