@@ -17,7 +17,7 @@ IMAGE_SIZE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master no
 IMAGE_SIZE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_SIZE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
-OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames
+OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster nodes)
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
@@ -124,8 +124,12 @@ ocp-master.devcls.com      : ok=74   changed=15   unreachable=0    failed=0
 ocp-node1.devcls.com       : ok=60   changed=14   unreachable=0    failed=0   
 ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
 ```
-- Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster.  This cluster deployment script will run for approximately 30-40 minutes (~ 4 nodes).
+- Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster.  This cluster deployment script should run for approximately 30-40 minutes (~ 4 nodes).
 ```
 # Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
+When the playbook finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
+
+14.  OpenShift Web Console can be accessed @ - https://<OpenShift Master Public Hostname>/
+Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
