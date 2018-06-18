@@ -132,4 +132,5 @@ $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks
 When the playbook finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
 
 14.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
+
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
