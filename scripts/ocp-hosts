@@ -25,7 +25,7 @@ openshift_master_console_port=443
 openshift_master_default_subdomain=westus.cloudapp.azure.com
 openshift_metrics_install_metrics=true
 openshift_metrics_cassandra_storage_type=emptydir
-openshift_metrics_hawkular_hostname=https://ocp-infra.westus.cloudapp.azure.com/hawkular/metrics
+openshift_metrics_hawkular_hostname=ocp-infra.westus.cloudapp.azure.com
 openshift_logging_install_logging=true
 
 # Added these two variables to get past the image pull issue!
