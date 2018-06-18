@@ -110,7 +110,7 @@ $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks
 ```
 
 13. Run the OpenShift Ansible Playbooks as below.
-- Run the 'prerequisites.yml' playbook to run pre-requisite checks
+- Run the `prerequisites.yml` playbook to run pre-requisite checks
 ```
 # Run the 'prerequisites.yml' playbook to run pre-requisite checks
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
@@ -124,7 +124,7 @@ ocp-master.devcls.com      : ok=74   changed=15   unreachable=0    failed=0
 ocp-node1.devcls.com       : ok=60   changed=14   unreachable=0    failed=0   
 ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
 ```
-- Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
+- Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster
 ```
 # Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
