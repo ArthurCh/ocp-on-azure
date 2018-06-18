@@ -124,7 +124,7 @@ ocp-master.devcls.com      : ok=74   changed=15   unreachable=0    failed=0
 ocp-node1.devcls.com       : ok=60   changed=14   unreachable=0    failed=0   
 ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
 ```
-- Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster
+- Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster.  This cluster deployment script will run for approximately 30-40 minutes (~ 4 nodes).
 ```
 # Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
