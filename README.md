@@ -75,7 +75,7 @@ $ cd ansible-deploy
 $ ansible-playbook -i hosts install.yml --syntax-check
 ```
 
-9. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 3 nodes).
+9. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 4 nodes).
 ```
 # Run the Ansible playbook
 $ ansible-playbook -i hosts -v install.yml
@@ -89,7 +89,8 @@ ocp-node1.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ```
 
-10. Login via SSH to the OpenShift **master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  From the master node (VM), make sure you are able to login in to all nodes using SSH.  Before proceeding with OpenShift installation, check the following -
+10. Login via SSH to the OpenShift **Master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  Before proceeding with OpenShift installation, check the following -
+- Make sure you are able to login to all nodes/VMs (Master + Infrastructure + Application) using SSH
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
 
@@ -98,7 +99,7 @@ ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 # Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
 $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
 ```
-Review the **ocp-hosts** file and update the hostnames for the OpenShift master, infrastructure and application nodes (VMs).
+Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.
 
 12. Run the Ansible OpenShift installer playbooks.  The OpenShift installer will run for 30-40 minutes depending upon the *Size* (compute capacity) of the VMs.
 ```

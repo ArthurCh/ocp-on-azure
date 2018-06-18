@@ -18,9 +18,14 @@ openshift_deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 openshift_clock_enabled=true
 
-openshift_master_default_subdomain=ocp39.devcls.local
+# Change the Master API and Console port to 443
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+openshift_master_default_subdomain=westus.cloudapp.azure.com
 openshift_metrics_install_metrics=true
 openshift_metrics_cassandra_storage_type=emptydir
+openshift_metrics_hawkular_hostname=https://ocp-infra.westus.cloudapp.azure.com/hawkular/metrics
 openshift_logging_install_logging=true
 
 # Added these two variables to get past the image pull issue!
@@ -36,7 +41,7 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 # Host group for masters
 [masters]
-ocp-master.devcls.com
+ocp-master.devcls.com openshift_public_hostname=ocp-master.westus.cloudapp.azure.com openshift_public_ip=104.42.118.71
 
 # Host group for etcd
 [etcd]
@@ -45,6 +50,6 @@ ocp-master.devcls.com
 # Host group for nodes, includes region info
 [nodes]
 ocp-master.devcls.com openshift_schedulable=True openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-infra.devcls.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
+ocp-infra.devcls.com openshift_public_hostname=ocp-infra.westus.cloudapp.azure.com openshift_public_ip=104.42.112.252 openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
 ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 ocp-node2.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
