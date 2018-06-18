@@ -129,7 +129,7 @@ ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
 # Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
-When the playbook finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
+When the Ansible playbook run finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
 
 14.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
 
