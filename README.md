@@ -7,7 +7,7 @@
 $ az extension add --name dns
 ```
 
-2. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+2. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 4).  Ensure that you are using the GitHub URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
@@ -17,7 +17,7 @@ IMAGE_SIZE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master no
 IMAGE_SIZE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_SIZE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
-OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster nodes)
+OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster node hostnames)
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
