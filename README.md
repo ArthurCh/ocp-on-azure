@@ -21,7 +21,7 @@ OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster node hostn
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
-# Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 3 below.
+# Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 4 below.
 # Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes.
 $ ./scripts/provision-vms.sh <no. of nodes>
 ```
@@ -99,7 +99,7 @@ ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 # Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
 $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
 ```
-Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.
+Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
 
 12. Run the Ansible OpenShift installer playbooks.  The OpenShift installer will run for 30-40 minutes depending upon the *Size* (compute capacity) of the VMs.
 ```
