@@ -4,8 +4,8 @@
 - Azure CLI must be installed on your workstation/PC
 - You should be logged-in to your Azure account on a terminal window
 
-### A] Deploy a *non-HA* OpenShift Cluster
-1. Open a terminal window on your PC.  Thne fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the GitHub URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+**A] Deploy a *non-HA* OpenShift Cluster**
+1. Open a terminal window on your PC.  Then fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the GitHub URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
