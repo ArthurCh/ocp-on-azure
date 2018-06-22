@@ -64,7 +64,7 @@ az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name 
 echo "Creating the NSG rule for RHEL Cockpit Web UI access from master node..."
 az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name ocpSecurityGroupRuleCP --protocol tcp --priority 1000 --destination-port-range 9090 --access allow
 
-# echo "Creating the NSG rule for APP access for infra node..."
+echo "Creating the NSG rule for APP access for infra node..."
 az network nsg rule create -g $RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleAppSSL --protocol tcp --priority 1000 --destination-port-range 443 --access allow
 az network nsg rule create -g $RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleApp --protocol tcp --priority 2000 --destination-port-range 80 --access allow
 
