@@ -93,22 +93,14 @@ ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
 
-10. Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
+Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
 ```
 # Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
 $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
 ```
 Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
 
-11. Run the Ansible OpenShift installer playbooks.  The OpenShift installer will run for 30-40 minutes depending upon the *Size* (compute capacity) of the VMs.
-```
-# Run the 'prerequisites.yml' playbook
-$ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
-# Run the 'deploy_cluster.yml' playbook
-$ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
-```
-
-12. Run the OpenShift Ansible Playbooks as below.
+10. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks
 ```
 # Run the 'prerequisites.yml' playbook to run pre-requisite checks
@@ -125,11 +117,11 @@ ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
 ```
 - Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster.  This cluster deployment script should run for approximately 30-40 minutes (~ 4 nodes).
 ```
-# Next, run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
+# Run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
 $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
 When the Ansible playbook run finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
 
-13.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
+11.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
 
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
