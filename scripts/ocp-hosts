@@ -1,4 +1,6 @@
-# ID06102018: Created by ganesh.radhakrishnan@microsoft.com
+# Created by: ganesh.radhakrishnan@microsoft.com
+# Dated: ID06102018
+# Description: This script deploys an OpenShift CP cluster with 1 master node, 1 infrastructure node and 'N' application nodes.  All nodes are deployed within a subnet in a VNET.  The master and infrastructure nodes are assigned Public IP's and are resolved using Azure DNS.
 
 # Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
@@ -17,31 +19,41 @@ ansible_become=true
 openshift_deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 openshift_clock_enabled=true
+openshift_master_dynamic_provisioning_enabled=True
 
 # Change the Master API and Console port to 443
 openshift_master_api_port=443
 openshift_master_console_port=443
 
-openshift_master_default_subdomain=westus.cloudapp.azure.com
+# Configure the Router subdomain and hostnames for Master nodes
+openshift_master_default_subdomain=cloudapps.ocp-dev.com
+openshift_master_cluster_hostname=ocp-master.devcls.com
+openshift_master_cluster_public_hostname=ocp-master.ocp-dev.com
+
+# Metrics configuration
 openshift_metrics_install_metrics=true
 openshift_metrics_cassandra_storage_type=emptydir
-openshift_metrics_hawkular_hostname=ocp-infra.westus.cloudapp.azure.com
-openshift_logging_install_logging=true
+#openshift_metrics_hawkular_hostname=ocp-infra.ocp-dev.com
 
-# Added these two variables to get past the image pull issue!
+# Logging configuration
+openshift_logging_install_logging=true
+openshift_logging_es_pvc_dynamic=false
+openshift_logging_es_cluster_size=3
+openshift_logging_es_nodeselector={'region':'infra'}
+openshift_logging_kibana_nodeselector={'region':'infra'}
+openshift_logging_curator_nodeselector={'region':'infra'}
+openshift_logging_es_number_of_replicas=1
+
+# Added these variables to get past the image pull issue!
 oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 openshift_examples_modify_imagestreams=true
-
-# Variables below are deprecated in v3.9
-#openshift_hosted_logging_deploy=true
-#openshift_hosted_metrics_deploy=true
 
 # Enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 
 # Host group for masters
 [masters]
-ocp-master.devcls.com openshift_public_hostname=ocp-master.westus.cloudapp.azure.com openshift_public_ip=104.42.118.71
+ocp-master.devcls.com
 
 # Host group for etcd
 [etcd]
@@ -49,7 +61,7 @@ ocp-master.devcls.com
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.devcls.com openshift_schedulable=True openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-infra.devcls.com openshift_public_hostname=ocp-infra.westus.cloudapp.azure.com openshift_public_ip=104.42.112.252 openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
-ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
-ocp-node2.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+ocp-master.devcls.com openshift_schedulable=True openshift_node_labels="{'region': 'primary', 'zone': 'west'}" openshift_hostname=ocp-master.devcls.com
+ocp-infra.devcls.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_hostname=ocp-infra.devcls.com
+ocp-node1.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}" openshift_hostname=ocp-node1.devcls.com
+ocp-node2.devcls.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}" openshift_hostname=ocp-node2.devcls.com

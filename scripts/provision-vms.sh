@@ -13,37 +13,34 @@ fi
 # Configure the variables below
 RG_NAME="rh-ocp39-rg"
 RG_LOCATION="westus"
+RG_TAGS="CreatedBy=garadha"
 IMAGE_SIZE_MASTER="Standard_B2ms"
 IMAGE_SIZE_NODE="Standard_B2ms"
 IMAGE_SIZE_INFRA="Standard_B2ms"
-VM_IMAGE="RedHat:RHEL:7.4:7.4.2018010506"
+VM_IMAGE="RedHat:RHEL:7-RAW:latest"
 OCP_DOMAIN_SUFFIX="devcls.com"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 
 # Create Azure resource group
 echo "Creating Azure resource group..."
-az group create --name $RG_NAME --location $RG_LOCATION
+az group create --name $RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 
 # Create the VNET and Subnet
 echo "Creating the VNET and Subnet..."
 az network vnet create --resource-group $RG_NAME --name ocpVnet --address-prefix 192.168.0.0/16 --subnet-name ocpSubnet --subnet-prefix 192.168.122.0/24
 
-# Create a private DNS Zone and register with VNET
-echo "Creating private DNS Zone to resolve IPs in ocpVnet..."
-az network dns zone create -g $RG_NAME --name devcls.local --zone-type private --registration-vnets ocpVnet
-
 # Create the public ip for the bastion host
 echo "Creating the public ip for the bastion host..."
-az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocp-bastion
+az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocp-bastion --allocation-method static
 
 # Create the public ip for the ocp master host
 echo "Creating the public ip for the OCP master host..."
-az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocp-master
+az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocp-master --allocation-method static
 
 # Create the public ip for the ocp infra host
 echo "Creating the public ip for the OCP infra host..."
-az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocp-infra
+az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocp-infra --allocation-method static
 
 # Create the network security group for bastion host
 echo "Creating the network security group for bastion host..."
@@ -61,9 +58,7 @@ az network nsg create -g $RG_NAME --name ocpInfraSecurityGroup
 echo "Creating the NSG rule for SSH access for bastion host..."
 az network nsg rule create -g $RG_NAME --nsg-name ocpBastionSecurityGroup --name ocpSecurityGroupRuleSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow
 
-# Create the NSG rule for SSH access for master node
-# echo "Creating the NSG rule for SSH access for master node..."
-# az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name ocpSecurityGroupRuleSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow
+# Create the NSG rule for API access for master node
 echo "Creating the NSG rule for API access for master node..."
 az network nsg rule create -g $RG_NAME --nsg-name ocpMasterSecurityGroup --name ocpSecurityGroupRuleAPI --protocol tcp --priority 900 --destination-port-range 443 --access allow
 echo "Creating the NSG rule for RHEL Cockpit Web UI access from master node..."
