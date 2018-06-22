@@ -45,6 +45,8 @@ openshift_logging_curator_nodeselector={'region':'infra'}
 openshift_logging_es_number_of_replicas=1
 
 # Added these variables to get past the image pull issue!
+oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
+oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 openshift_examples_modify_imagestreams=true
 
