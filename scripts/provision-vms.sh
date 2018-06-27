@@ -15,7 +15,7 @@ fi
 # IMPORTANT:  Review and configure the following variables before running this script!!
 RG_NAME="rh-ocp39-rg"
 RG_LOCATION="westus"
-RG_TAGS="CreatedBy=garadha"
+RG_TAGS="CreatedBy=`whoami`"
 KEY_VAULT_NAME="OCP-Key-Vault"
 IMAGE_SIZE_MASTER="Standard_B2ms"
 IMAGE_SIZE_NODE="Standard_B2ms"
