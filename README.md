@@ -45,11 +45,12 @@ All OCP infrastructure resources created OK.
 $ az account show
 ```
 
-3. Create an Azure *Service Principal* (SP) with the role of *contributor* in the Azure resource group.  Record the output values as we will use them in subsequent steps for configuring Azure Storage.  Specify correct values for **Subscription ID** and **Resource Group** before issuing the command.
+3. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
 ```
-# Create the service principal for OpenShift Cloud provider.  Record the command output in a file.
-$ az ad sp create-for-rbac --name ocpcloudprovider --password cl0udpr0vidersecr3t --role contributor --scopes /subscriptions/<Subscription ID>/resourceGroups/<Resource Group>
+# Create an Azure Service Principal
+$ az ad sp create-for-rbac --name ocpcloudprovider --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/rh-ocp39-rg
 ```
+Record the output of the above command by saving it in a file.
 
 4. Login to the Bastion host VM using SSH (Terminal window). Install *Ansible* and *Git*.
 ```
@@ -122,12 +123,7 @@ $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/mast
 ```
 Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
 
-12. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
-```
-# Create an Azure Service Principal
-$ az ad sp create-for-rbac --name ocpcloudprovider --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/rh-ocp39-rg
-```
-Record the output of the above command by saving it in a file.
+12. 
 
 13. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks
