@@ -33,7 +33,7 @@ echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 echo "Creating Azure resource group..."
 az group create --name $RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 
-# Create a key vault and set the ssh private key as a secret. This way we won't loose the private key!
+# Create a key vault and set the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault..."
 az keyvault create -n ocpVault -g $RG_NAME -l $RG_LOCATION
 az keyvault secret set --vault-name ocpVault -n ocpNodeKey --file ~/.ssh/id_rsa
