@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# Notes:
 # ID06102018: Created by ganesh.radhakrishnan@microsoft.com
+# ID06272018: Updated script to allow creating OCP VM's in a separate subnet within an existing VNET
 
 set -e
 
@@ -10,7 +12,7 @@ if [ $# -le 0 ]; then
   exit 1
 fi
 
-# Configure the variables below
+# IMPORTANT:  Review and configure the following variables before running this script!!
 RG_NAME="rh-ocp39-rg"
 RG_LOCATION="westus"
 RG_TAGS="CreatedBy=garadha"
@@ -18,6 +20,11 @@ IMAGE_SIZE_MASTER="Standard_B2ms"
 IMAGE_SIZE_NODE="Standard_B2ms"
 IMAGE_SIZE_INFRA="Standard_B2ms"
 VM_IMAGE="RedHat:RHEL:7-RAW:latest"
+VNET_CREATE="Yes"
+VNET_NAME="ocpVnet"
+VNET_ADDR_PREFIX="192.168.0.0/16"
+SUBNET_NAME="ocpSubnet"
+SUBNET_ADDR_PREFIX="192.168.122.0/24"
 OCP_DOMAIN_SUFFIX="devcls.com"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
@@ -26,9 +33,20 @@ echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 echo "Creating Azure resource group..."
 az group create --name $RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 
+# Create a key vault and set the ssh private key as a secret. This way we won't loose the private key!
+echo "Creating Azure key vault..."
+az keyvault create -n ocpVault -g $RG_NAME -l $RG_LOCATION
+az keyvault secret set --vault-name ocpVault -n ocpNodeKey --file ~/.ssh/id_rsa
+
 # Create the VNET and Subnet
-echo "Creating the VNET and Subnet..."
-az network vnet create --resource-group $RG_NAME --name ocpVnet --address-prefix 192.168.0.0/16 --subnet-name ocpSubnet --subnet-prefix 192.168.122.0/24
+if [ $VNET_CREATE = "Yes" || $VNET_CREATE = "yes" ]
+then
+  echo "Creating the VNET and Subnet..."
+  az network vnet create --resource-group $RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
+else
+  echo "Creating Subnet for VNET $VNET_NAME"
+  az network vnet subnet create --address-prefix $SUBNET_ADDR_PREFIX --name $SUBNET_NAME --resource-group $RG_NAME --vnet-name $VNET_NAME
+fi
 
 # Create the public ip for the bastion host
 echo "Creating the public ip for the bastion host..."
@@ -70,15 +88,15 @@ az network nsg rule create -g $RG_NAME --nsg-name ocpInfraSecurityGroup --name o
 
 # Create the NIC for Bastion host
 echo "Creating NIC for Bastion Host..."
-az network nic create -g $RG_NAME --name bastionNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
+az network nic create -g $RG_NAME --name bastionNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
 
 # Create the NIC for OCP master host
 echo "Creating NIC for OCP master Host..."
-az network nic create -g $RG_NAME --name masterNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
+az network nic create -g $RG_NAME --name masterNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
 
 # Create the NIC for OCP infra host
 echo "Creating NIC for OCP infra Host..."
-az network nic create -g $RG_NAME --name infraNIC --vnet-name ocpVnet --subnet ocpSubnet --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
+az network nic create -g $RG_NAME --name infraNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
 
 # Create the availability set
 echo "Creating the availability set..."
@@ -102,7 +120,7 @@ i=1
 while [ $i -le $1 ]
 do
   echo "Creating OCP Node VM $i..."
-  az vm create -g $RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --vnet-name ocpVnet --subnet ocpSubnet --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_SIZE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
+  az vm create -g $RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --vnet-name $VNET_NAME --subnet $SUBNET_NAME --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_SIZE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
   i=$(( $i + 1 ))
 done
 

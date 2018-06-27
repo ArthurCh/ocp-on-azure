@@ -12,10 +12,15 @@ VAR NAME | DEFAULT VALUE | DESCRIPTION
 RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
 RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
 RG_TAGS | CreatedBy=garadha | Tags [name=value] which are to be assigned to the resource group
-IMAGE_SIZE_MASTER | Stanrdard_B2ms | Azure VM Image Size for OpenShift master nodes
-IMAGE_SIZE_INFRA | Stanrdard_B2ms | Azure VM Image Size for Infrastructure nodes
-IMAGE_SIZE_NODE | Stanrdard_B2ms | Azure VM Image Size for Application nodes
+IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nodes
+IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
+IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7.4:7.4.2018010506 | Operating system image for all VMs
+VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No)
+VNET_NAME | ocpVnet | Name of the VNET
+VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
+SUBNET_NAME | ocpSubnet | Name of the Subnet
+SUBNET_ADDR_PREFIX | 192.168.122.0/24 | Network segment for subnet
 OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster node hostnames)
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
@@ -99,6 +104,22 @@ Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` Gi
 $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
 ```
 Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
+
+10. Obtain the subscription ID for your Azure account.
+```
+# Retrieve subscription info. for your Azure account
+$ az account show
+```
+Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the output of the above command.
+
+11. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
+```
+# Create an Azure Service Principal
+$ az ad sp create-for-rbac --name ocpcloudprovider --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/rh-ocp39-rg
+```
+Record the output of the above command by saving it in a file.
+
+12. 
 
 10. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks

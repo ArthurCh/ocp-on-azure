@@ -1,6 +1,11 @@
 # Created by: ganesh.radhakrishnan@microsoft.com
-# Dated: ID06102018
+# Date: 06102018
+# Version: 2.0
 # Description: This script deploys an OpenShift CP cluster with 1 master node, 1 infrastructure node and 'N' application nodes.  All nodes are deployed within a subnet in a VNET.  The master and infrastructure nodes are assigned Public IP's and are resolved using Azure DNS.
+#
+# Notes:
+# ID06102018: Created inventory file
+# ID06272018: Updated inventory to deploy logging components
 
 # Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
@@ -37,7 +42,7 @@ openshift_metrics_cassandra_storage_type=emptydir
 
 # Logging configuration
 openshift_logging_install_logging=true
-openshift_logging_es_pvc_dynamic=false
+openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_cluster_size=3
 openshift_logging_es_nodeselector={'region':'infra'}
 openshift_logging_kibana_nodeselector={'region':'infra'}
