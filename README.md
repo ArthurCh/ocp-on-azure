@@ -39,7 +39,19 @@ The script should print the following message upon successful creation of all in
 All OCP infrastructure resources created OK.
 ```
 
-2. Login to the Bastion host VM using SSH (Terminal window). Install *Ansible* and *Git*.
+2. Obtain the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
+```
+# Retrieve subscription info. for your Azure account
+$ az account show
+```
+
+3. Create an Azure *Service Principal* (SP) with the role of *contributor* in the Azure resource group.  Record the output values as we will use them in subsequent steps for configuring Azure Storage.  Specify correct values for **Subscription ID** and **Resource Group** before issuing the command.
+```
+# Create the service principal for OpenShift Cloud provider.  Record the command output in a file.
+$ az ad sp create-for-rbac --name ocpcloudprovider --password cl0udpr0vidersecr3t --role contributor --scopes /subscriptions/<Subscription ID>/resourceGroups/<Resource Group>
+```
+
+4. Login to the Bastion host VM using SSH (Terminal window). Install *Ansible* and *Git*.
 ```
 # Login to Bastion host via SSH.  Substitute the IP Address of the DNS name of the Bastion host.
 $ ssh ocpuser@<Public IP Address / DNS name of Bastion Host>
@@ -54,7 +66,7 @@ $ ansible --version
 $ git --version
 ```
 
-3. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  In the terminal window connected to the Bastion host, clone this repository.  Ensure that you are using the URL of your fork when cloning this repository.
+5. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  In the terminal window connected to the Bastion host, clone this repository.  Ensure that you are using the URL of your fork when cloning this repository.
 ```
 # Switch to home directory
 $ cd
@@ -65,17 +77,17 @@ $ Switch to the 'ocp-on-azure/ansible-deploy' directory
 $ cd ocp-on-azure/ansible-deploy/
 ```
 
-4. Update `hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
+6. Update `hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
 
-5. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
+7. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
 
-6. Check if Ansible is able to connect to all OpenShift nodes.
+8. Check if Ansible is able to connect to all OpenShift nodes.
 ```
 # Ping all OpenShift nodes.  You current directory should be 'ocp-on-azure/ansible-deploy' directory.
 $ ansible -i hosts all -m ping
 ```
 
-7. Run syntax check on ansible playbook.  If there are any errors, fix them before proceeding.
+9. Run syntax check on ansible playbook.  If there are any errors, fix them before proceeding.
 ```
 # Ensure you are in sub-directory 'ansible-deploy'.  If not, switch to this directory.
 $ cd ansible-deploy
@@ -84,7 +96,7 @@ $ cd ansible-deploy
 $ ansible-playbook -i hosts install.yml --syntax-check
 ```
 
-8. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 4 nodes).
+10. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 4 nodes).
 ```
 # Run the Ansible playbook
 $ ansible-playbook -i hosts -v install.yml
@@ -98,7 +110,7 @@ ocp-node1.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ```
 
-9. Login via SSH to the OpenShift **Master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  Before proceeding with OpenShift installation, check the following -
+11. Login via SSH to the OpenShift **Master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  Before proceeding with OpenShift installation, check the following -
 - Make sure you are able to login to all nodes/VMs (Master + Infrastructure + Application) using SSH
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
@@ -110,23 +122,14 @@ $ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/mast
 ```
 Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
 
-10. Obtain the subscription ID for your Azure account.
-```
-# Retrieve subscription info. for your Azure account
-$ az account show
-```
-Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the output of the above command.
-
-11. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
+12. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
 ```
 # Create an Azure Service Principal
 $ az ad sp create-for-rbac --name ocpcloudprovider --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/rh-ocp39-rg
 ```
 Record the output of the above command by saving it in a file.
 
-12. 
-
-10. Run the OpenShift Ansible Playbooks as below.
+13. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks
 ```
 # Run the 'prerequisites.yml' playbook to run pre-requisite checks
@@ -148,6 +151,12 @@ $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks
 ```
 When the Ansible playbook run finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
 
-11.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
+14.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
 
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
+
+**B] After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the Azure Web Portal.  Specify correct value for the Azure **Resource Group** in the delete command.
+```
+# Delete the resource group and all of its resources.
+$ az group delete --name <Resource Group name>
+```
