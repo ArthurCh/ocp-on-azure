@@ -29,10 +29,6 @@ OCP_DOMAIN_SUFFIX="devcls.com"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 
-# Create Azure resource group
-echo "Creating Azure resource group..."
-az group create --name $RG_NAME --location $RG_LOCATION --tags $RG_TAGS
-
 # Create a key vault and set the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault..."
 az keyvault create -n ocpVault -g $RG_NAME -l $RG_LOCATION
@@ -41,6 +37,10 @@ az keyvault secret set --vault-name ocpVault -n ocpNodeKey --file ~/.ssh/id_rsa
 # Create the VNET and Subnet
 if [ $VNET_CREATE = "Yes" || $VNET_CREATE = "yes" ]
 then
+  # Create Azure resource group
+  echo "Creating Azure resource group..."
+  az group create --name $RG_NAME --location $RG_LOCATION --tags $RG_TAGS
+
   echo "Creating the VNET and Subnet..."
   az network vnet create --resource-group $RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
 else

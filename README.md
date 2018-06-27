@@ -1,4 +1,4 @@
-## Automate deployment of Redhat OpenShift on Microsoft Azure.
+## Automate deployment of Redhat OpenShift on Microsoft Azure
 
 **Deployment Topology**
 ![alt tag](./images/OCP-Azure-Deploy.jpg)
@@ -14,7 +14,7 @@ VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
 RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
 RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
-RG_TAGS | CreatedBy=garadha | Tags [name=value] which are to be assigned to the resource group
+RG_TAGS | CreatedBy=garadha | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
 IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nodes
 IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
