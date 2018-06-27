@@ -20,7 +20,7 @@ IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nod
 IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
-VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No)
+VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No).  If set to 'No', resource group and virtual network should already exist.
 VNET_NAME | ocpVnet | Name of the VNET
 VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
 SUBNET_NAME | ocpSubnet | Name of the Subnet
