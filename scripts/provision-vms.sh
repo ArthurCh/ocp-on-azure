@@ -16,6 +16,7 @@ fi
 RG_NAME="rh-ocp39-rg"
 RG_LOCATION="westus"
 RG_TAGS="CreatedBy=garadha"
+KEY_VAULT_NAME="OCP-Key-Vault"
 IMAGE_SIZE_MASTER="Standard_B2ms"
 IMAGE_SIZE_NODE="Standard_B2ms"
 IMAGE_SIZE_INFRA="Standard_B2ms"
@@ -29,13 +30,17 @@ OCP_DOMAIN_SUFFIX="devcls.com"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 
+# Set the default location for all resources
+echo "Setting the default location to $RG_LOCATION ..."
+az configure --defaults location=$RG_LOCATION
+
 # Create a key vault and set the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
-echo "Creating Azure key vault..."
-az keyvault create -n ocpVault -g $RG_NAME -l $RG_LOCATION
-az keyvault secret set --vault-name ocpVault -n ocpNodeKey --file ~/.ssh/id_rsa
+echo "Creating Azure key vault $KEY_VAULT_NAME ..."
+az keyvault create --resource-group $RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment
+az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
 
 # Create the VNET and Subnet
-if [ $VNET_CREATE = "Yes" || $VNET_CREATE = "yes" ]
+if [ $VNET_CREATE = "Yes" ] || [ $VNET_CREATE = "yes" ]
 then
   # Create Azure resource group
   echo "Creating Azure resource group..."
