@@ -1,4 +1,4 @@
-## Automate deployment of Redhat OpenShift on Microsoft Azure
+## Deploy Redhat OpenShift CP 3.9+ on Microsoft Azure
 Use the artifacts in this project to deploy a simple multi-node non-HA OpenShift CP cluster on Azure.  For deploying a production grade highly available OpenShift CP cluster on Azure, refer to this [Microsoft GitHub](https://github.com/Microsoft/openshift-container-platform) project.
 
 **Deployment Topology**
@@ -52,7 +52,7 @@ $ az account show
 ```
 
 3. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
-Specify appropriate values for **Subscription ID**, **Resource Group** and **SP Name** in the command below.  Make sure the SP Name is unique eg., <MTC Region>-OCP-Azure-SP-<Date>
+Specify appropriate values for **Subscription ID**, **Resource Group** and **SP Name** in the command below.  Make sure the SP Name is unique eg., [MTC Region]-OCP-Azure-SP-[Date]
 ```
 # Create an Azure Service Principal.
 $ az ad sp create-for-rbac --name <SP Name> --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/<Resource Group>
@@ -74,7 +74,7 @@ $ ansible --version
 $ git --version
 ```
 
-In the terminal window connected to the Bastion host, clone this [GitHub repository](https://github.com/ganrad/ocp-on-azure).  Ensure that you are using the URL of your fork when cloning this repository.
+In the terminal window connected to the Bastion host, clone this [GitHub repository](https://github.com/ganrad/ocp-on-azure).  Make sure you are using the URL of your fork when cloning this repository.
 ```
 # Switch to home directory
 $ cd
@@ -126,13 +126,11 @@ ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
 ```
 # Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
-$ wget https://raw.githubusercontent.com/<YOUR_GITHUB_ACCOUNT>/ocp-on-azure/master/scripts/ocp-hosts
+$ wget https://raw.githubusercontent.com/<Your-GitHub-Account>/ocp-on-azure/master/scripts/ocp-hosts
 ```
-Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes/VMs.  Make other configuration changes as necessary.
+Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes (VM's).  Make other configuration changes as necessary.
 
-12. 
-
-13. Run the OpenShift Ansible Playbooks as below.
+12. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks
 ```
 # Run the 'prerequisites.yml' playbook to run pre-requisite checks
@@ -154,11 +152,12 @@ $ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks
 ```
 When the Ansible playbook run finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
 
-14.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
+13.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
 
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
 
-**B] Tear down the OpenShift CP cluster and delete all Azure infrastructure resources**
+**B] Tearing down the OpenShift CP cluster**
+
 After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the [Azure Portal](https://portal.azure.com).  Specify correct value for the Azure **Resource Group** in the delete command.
 ```
 # Delete the resource group and all of associated resources.
