@@ -28,7 +28,7 @@ Review and update the following variables in the script `scripts/provision-vms.s
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
-RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed
+OCP_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed
 RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
 RG_TAGS | CreatedBy=[Login Name] | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
 KEY_VAULT_NAME | ocpKeyVault | Name of the key vault to store SSH private key
@@ -39,6 +39,7 @@ VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
 BASTION_HOST | ocp-bastion | Name of the Bastion host
 OCP_MASTER_HOST | ocp-master | Name of the OpenShift Master host
 OCP_INFRA_HOST | ocp-infra | Name of the OpenShift Infrastructure host
+VNET_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the Virtual Network will be deployed
 VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No).  If set to 'No', resource group and virtual network should already exist.
 VNET_NAME | ocpVnet | Name of the VNET
 VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
