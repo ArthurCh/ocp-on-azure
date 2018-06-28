@@ -1,17 +1,17 @@
 ## Deploy Redhat OpenShift CP 3.9+ on Microsoft Azure
-Use the artifacts in this project to deploy a simple multi-node non-HA OpenShift CP cluster on Azure.  For deploying a production grade highly available OpenShift CP cluster on Azure, refer to this [Microsoft GitHub](https://github.com/Microsoft/openshift-container-platform) project.
+Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP cluster on Azure.  For deploying a production grade highly available OpenShift CP cluster on Azure, refer to this [Microsoft GitHub](https://github.com/Microsoft/openshift-container-platform) project.
 
 **Deployment Topology**
 ![alt tag](./images/OCP-Azure-Deploy.jpg)
 
 **Prerequisites**
-- Azure CLI must be installed on your workstation/PC
-- You should be logged-in to your Azure account on a terminal window
+- [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) installed on a workstation/PC 
+- An Azure user account with "Owner" role permissions either at the **Subscription** or **Resource Group** levels
 
 **A] Deploy a *non-HA* OpenShift Cluster**
-1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Open a terminal window on your PC and clone this repository (see below).  Make sure you are using the GitHub URL of your fork when cloning this repository.  
+1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Open a terminal window on your PC and clone this repository (see below).  Make sure you are using the GitHub URL of your forked repository.  
 ```
-# Clone this GitHub repo. from your fork.  Substitute your GitHub account ID in the command below.
+# Clone this GitHub repository.  Substitute your GitHub account ID in the command below.
 $ git clone https://github.com/<Your-GitHub-Account>/ocp-on-azure
 # Switch directory
 $ cd ocp-on-azure
