@@ -9,7 +9,14 @@ Use the artifacts in this project to deploy a simple multi-node non-HA OpenShift
 - You should be logged-in to your Azure account on a terminal window
 
 **A] Deploy a *non-HA* OpenShift Cluster**
-1. Open a terminal window on your PC.  Then fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Then clone this repository (review Step 3).  Ensure that you are using the GitHub URL of your fork when cloning this repository.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Open a terminal window on your PC and clone this repository (see below).  Make sure you are using the GitHub URL of your fork when cloning this repository.  
+```
+# Clone this GitHub repo. from your fork.  Substitute your GitHub account ID in the command below.
+$ git clone https://github.com/<Your-GitHub-Account>/ocp-on-azure
+# Switch directory
+$ cd ocp-on-azure
+```
+Switch to the `ocp-on-azure` directory.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
@@ -30,7 +37,6 @@ OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for hostnames (cluster node hostn
 
 After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
-# Clone this GitHub repository first.  If you are not familiar with GitHub, refer to instructions in Step 4 below.
 # Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes.
 $ ./scripts/provision-vms.sh <no. of nodes>
 ```
@@ -39,18 +45,19 @@ The script should print the following message upon successful creation of all in
 All OCP infrastructure resources created OK.
 ```
 
-2. Obtain the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
+2. Retrieve the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
 ```
 # Retrieve subscription info. for your Azure account
 $ az account show
 ```
 
 3. Create an Azure Service Principal (SP).  This SP will be used by the *Azure Cloud Provider* OpenShift plug-in to create persistent volumes dynamically.  In a later step, we will define a Kubernetes *Storage Class* object for Azure disk storage and configure it as the default storage provider for persistent volumes for the OpenShift cluster.
+Specify appropriate values for **Subscription ID**, **Resource Group** and **SP Name** in the command below.  Make sure the SP Name is unique eg., <MTC Region>-OCP-Azure-SP-<Date>
 ```
-# Create an Azure Service Principal
-$ az ad sp create-for-rbac --name ocpcloudprovider --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/rh-ocp39-rg
+# Create an Azure Service Principal.
+$ az ad sp create-for-rbac --name <SP Name> --password Cl0udpr0viders3cr3t --role contributor --scopes /subscription/<Subscription ID>/resourceGroups/<Resource Group>
 ```
-Record the output of the above command by saving it in a file.
+Save the output of the above command in a file.
 
 4. Login to the Bastion host VM using SSH (Terminal window). Install *Ansible* and *Git*.
 ```
@@ -67,7 +74,7 @@ $ ansible --version
 $ git --version
 ```
 
-5. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  In the terminal window connected to the Bastion host, clone this repository.  Ensure that you are using the URL of your fork when cloning this repository.
+In the terminal window connected to the Bastion host, clone this [GitHub repository](https://github.com/ganrad/ocp-on-azure).  Ensure that you are using the URL of your fork when cloning this repository.
 ```
 # Switch to home directory
 $ cd
@@ -151,8 +158,9 @@ When the Ansible playbook run finishes, the output should list the status of all
 
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
 
-**B] After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the Azure Web Portal.  Specify correct value for the Azure **Resource Group** in the delete command.
+**B] Tear down the OpenShift CP cluster and delete all Azure infrastructure resources**
+After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the [Azure Portal](https://portal.azure.com).  Specify correct value for the Azure **Resource Group** in the delete command.
 ```
-# Delete the resource group and all of its resources.
+# Delete the resource group and all of associated resources.
 $ az group delete --name <Resource Group name>
 ```
