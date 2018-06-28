@@ -21,6 +21,9 @@ IMAGE_SIZE_MASTER="Standard_B2ms"
 IMAGE_SIZE_NODE="Standard_B2ms"
 IMAGE_SIZE_INFRA="Standard_B2ms"
 VM_IMAGE="RedHat:RHEL:7-RAW:latest"
+BASTION_HOST="ocp-bastion"
+OCP_MASTER_HOST="ocp-master"
+OCP_INFRA_HOST="ocp-infra"
 VNET_CREATE="Yes"
 VNET_NAME="ocpVnet"
 VNET_ADDR_PREFIX="192.168.0.0/16"
@@ -55,15 +58,15 @@ fi
 
 # Create the public ip for the bastion host
 echo "Creating the public ip for the bastion host..."
-az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name ocp-bastion --allocation-method static
+az network public-ip create -g $RG_NAME --name ocpBastionPublicIP --dns-name $BASTION_HOST --allocation-method static
 
 # Create the public ip for the ocp master host
 echo "Creating the public ip for the OCP master host..."
-az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name ocp-master --allocation-method static
+az network public-ip create -g $RG_NAME --name ocpMasterPublicIP --dns-name $OCP_MASTER_HOST --allocation-method static
 
 # Create the public ip for the ocp infra host
 echo "Creating the public ip for the OCP infra host..."
-az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name ocp-infra --allocation-method static
+az network public-ip create -g $RG_NAME --name ocpInfraPublicIP --dns-name $OCP_INFRA_HOST --allocation-method static
 
 # Create the network security group for bastion host
 echo "Creating the network security group for bastion host..."
@@ -109,15 +112,15 @@ az vm availability-set create -g $RG_NAME --name ocpAvailabilitySet
 
 # Create the Bastion Host VM
 echo "Creating the bastion host VM..."
-az vm create -g $RG_NAME --name ocp-bastion.$OCP_DOMAIN_SUFFIX --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics bastionNIC --image $VM_IMAGE --size $IMAGE_SIZE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name "$BASTION_HOST.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics bastionNIC --image $VM_IMAGE --size $IMAGE_SIZE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Master VM
 echo "Creating the OCP Master VM..."
-az vm create -g $RG_NAME --name ocp-master.$OCP_DOMAIN_SUFFIX --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics masterNIC --image $VM_IMAGE --size $IMAGE_SIZE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name "$OCP_MASTER_HOST.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics masterNIC --image $VM_IMAGE --size $IMAGE_SIZE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Infra VM
 echo "Creating the OCP Infra VM..."
-az vm create -g $RG_NAME --name ocp-infra.$OCP_DOMAIN_SUFFIX --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_SIZE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $RG_NAME --name "$OCP_INFRA_HOST.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_SIZE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Node VMs...
 echo "OCP node count=[$1]..."
@@ -128,5 +131,9 @@ do
   az vm create -g $RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --vnet-name $VNET_NAME --subnet $SUBNET_NAME --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_SIZE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
   i=$(( $i + 1 ))
 done
+
+# Copy the SSH private key to the Bastion host
+echo "Copying SSH private key to Bastion host..."
+scp ~/.ssh/id_rsa "ocpuser@$BASTION_HOST.$RG_LOCATION.cloudapp.azure.com:/home/ocpuser/.ssh"
 
 echo "All OCP infrastructure resources created OK."

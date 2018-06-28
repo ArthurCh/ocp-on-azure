@@ -13,14 +13,22 @@ Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP clu
 ```
 # Clone this GitHub repository.  Substitute your GitHub account ID in the command below.
 $ git clone https://github.com/<Your-GitHub-Account>/ocp-on-azure
+```
+In case you haven't already generated an SSH key pair, do so now.  SSH keys will be used to authenticate and login to the Linux VM's.
+```
+# Generate an SSH key pair (private and public keys)
+$ ssh-keygen -t rsa -b 2048
+```
+Switch to the `ocp-on-azure` directory.
+```
 # Switch directory
 $ cd ocp-on-azure
 ```
-Switch to the `ocp-on-azure` directory.  Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
 VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
-RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
+RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed
 RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
 RG_TAGS | CreatedBy=[Login Name] | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
 KEY_VAULT_NAME | ocpKeyVault | Name of the key vault to store SSH private key
@@ -28,6 +36,9 @@ IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nod
 IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
 IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
 VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
+BASTION_HOST | ocp-bastion | Name of the Bastion host
+OCP_MASTER_HOST | ocp-master | Name of the OpenShift Master host
+OCP_INFRA_HOST | ocp-infra | Name of the OpenShift Infrastructure host
 VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No).  If set to 'No', resource group and virtual network should already exist.
 VNET_NAME | ocpVnet | Name of the VNET
 VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
