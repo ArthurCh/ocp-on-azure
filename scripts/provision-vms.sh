@@ -38,6 +38,10 @@ echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 echo "Setting the default location to $RG_LOCATION ..."
 az configure --defaults location=$RG_LOCATION
 
+# Create Azure resource group
+echo "Creating Azure resource group for OpenShift resources..."
+az group create --name $OCP_RG_NAME --location $RG_LOCATION --tags $RG_TAGS
+
 # Create a key vault and set the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment
@@ -46,12 +50,9 @@ az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/
 # Create the VNET and Subnet
 if [ $VNET_CREATE = "Yes" ] || [ $VNET_CREATE = "yes" ]
 then
-  # Create Azure resource group
-  echo "Creating Azure resource group..."
-  az group create --name $OCP_RG_NAME --location $RG_LOCATION --tags $RG_TAGS
-
+  # Create the VNET + Subnet in the same RG as the OCP resources
   echo "Creating the VNET and Subnet..."
-  az network vnet create --resource-group $VNET_RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
+  az network vnet create --resource-group $OCP_RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
 else
   echo "Creating Subnet for VNET $VNET_NAME"
   az network vnet subnet create --address-prefix $SUBNET_ADDR_PREFIX --name $SUBNET_NAME --resource-group $VNET_RG_NAME --vnet-name $VNET_NAME
