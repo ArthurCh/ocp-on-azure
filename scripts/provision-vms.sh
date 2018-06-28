@@ -98,15 +98,15 @@ az network nsg rule create -g $OCP_RG_NAME --nsg-name ocpInfraSecurityGroup --na
 
 # Create the NIC for Bastion host
 echo "Creating NIC for Bastion Host..."
-az network nic create -g $OCP_RG_NAME --name bastionNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
+az network nic create -g $VNET_RG_NAME --name bastionNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
 
 # Create the NIC for OCP master host
 echo "Creating NIC for OCP master Host..."
-az network nic create -g $OCP_RG_NAME --name masterNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
+az network nic create -g $VNET_RG_NAME --name masterNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
 
 # Create the NIC for OCP infra host
 echo "Creating NIC for OCP infra Host..."
-az network nic create -g $OCP_RG_NAME --name infraNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
+az network nic create -g $VNET_RG_NAME --name infraNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
 
 # Create the availability set
 echo "Creating the availability set..."
