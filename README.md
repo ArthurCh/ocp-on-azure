@@ -158,8 +158,8 @@ Substitute the DNS name of the OpenShift cluster **Master Node** in the URL abov
 
 **B] Tearing down the OpenShift CP cluster**
 
-After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the [Azure Portal](https://portal.azure.com).  Specify correct value for the Azure **Resource Group** in the delete command.
+After you are done using the OpenShift CP cluster, you can delete all Azure resources using Azure CLI or the [Azure Portal](https://portal.azure.com).  To delete all Azure resources using Azure CLI, refer to the command below.  Specify correct value for the Azure **Resource Group** name in the delete command.
 ```
-# Delete the resource group and all of associated resources.
+# Delete the resource group and all associated resources.
 $ az group delete --name <Resource Group name>
 ```
