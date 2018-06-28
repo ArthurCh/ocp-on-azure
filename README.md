@@ -22,7 +22,7 @@ VAR NAME | DEFAULT VALUE | DESCRIPTION
 -------- | ------------- | -----------
 RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group used to deploy the OpenShift Cluster
 RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
-RG_TAGS | CreatedBy=<Login Name> | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
+RG_TAGS | CreatedBy=[Login Name] | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
 KEY_VAULT_NAME | ocpKeyVault | Name of the key vault to store SSH private key
 IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nodes
 IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
