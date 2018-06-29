@@ -39,9 +39,9 @@ VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
 BASTION_HOST | ocp-bastion | Name of the Bastion host
 OCP_MASTER_HOST | ocp-master | Name of the OpenShift Master host
 OCP_INFRA_HOST | ocp-infra | Name of the OpenShift Infrastructure host
-VNET_RG_NAME | rh-ocp39-rg | Name of the Virtual Network Azure Resource Group when VNET_CREATE is set to 'No'
-VNET_CREATE | Yes | Create a separate VNET or use an existing VNET (Values: Yes or No).  If set to 'No', resource group and virtual network should already exist.
-VNET_NAME | ocpVnet | Name of the VNET
+VNET_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No'
+VNET_CREATE | Yes | **Yes:** Create the VNET and Subnet resources in the resource group specified by **OCP_RG_NAME**.  The values specified in both OCP_RG_NAME and VNET_RG_NAME must be the same.  **No:** Create a subnet in an existing virtual network specified by **VNET_NAME** in resource group **VNET_RG_NAME**.  Both VNET resource group and virtual network should already exist.
+VNET_NAME | ocp39Vnet | Name of the VNET
 VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
 SUBNET_NAME | ocpSubnet | Name of the Subnet
 SUBNET_ADDR_PREFIX | 192.168.122.0/24 | Network segment for subnet

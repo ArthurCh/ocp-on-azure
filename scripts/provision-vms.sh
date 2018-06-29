@@ -26,9 +26,9 @@ OCP_MASTER_HOST="ocp-master"
 OCP_INFRA_HOST="ocp-infra"
 VNET_RG_NAME="rh-ocp39-rg"
 VNET_CREATE="Yes"
-VNET_NAME="ocpVnet"
+VNET_NAME="ocp39Vnet"
 VNET_ADDR_PREFIX="192.168.0.0/16"
-SUBNET_NAME="ocpSubnet"
+SUBNET_NAME="ocp39Subnet"
 SUBNET_ADDR_PREFIX="192.168.122.0/24"
 OCP_DOMAIN_SUFFIX="devcls.com"
 
@@ -38,11 +38,11 @@ echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 echo "Setting the default location to $RG_LOCATION ..."
 az configure --defaults location=$RG_LOCATION
 
-# Create Azure resource group
+# Create Azure resource group for OpenShift resources
 echo "Creating Azure resource group for OpenShift resources..."
 az group create --name $OCP_RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 
-# Create a key vault and set the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
+# Create a key vault and store the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment
 az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
@@ -96,17 +96,22 @@ echo "Creating the NSG rule for APP access for infra node..."
 az network nsg rule create -g $OCP_RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleAppSSL --protocol tcp --priority 1000 --destination-port-range 443 --access allow
 az network nsg rule create -g $OCP_RG_NAME --nsg-name ocpInfraSecurityGroup --name ocpSecurityGroupRuleApp --protocol tcp --priority 2000 --destination-port-range 80 --access allow
 
+vnetId=$(az resource show -g $VNET_RG_NAME -n $VNET_NAME --resource-type "Microsoft.Network/virtualNetworks" --query id --output tsv)
+echo "VNET ID=[$vnetId]"
+subnetId="$vnetId/subnets/$SUBNET_NAME"
+echo "Subnet ID=[$subnetId]"
+
 # Create the NIC for Bastion host
 echo "Creating NIC for Bastion Host..."
-az network nic create -g $VNET_RG_NAME --name bastionNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
+az network nic create -g $OCP_RG_NAME --name bastionNIC --subnet $subnetId --public-ip-address ocpBastionPublicIP --network-security-group ocpBastionSecurityGroup
 
 # Create the NIC for OCP master host
 echo "Creating NIC for OCP master Host..."
-az network nic create -g $VNET_RG_NAME --name masterNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
+az network nic create -g $OCP_RG_NAME --name masterNIC --subnet $subnetId --public-ip-address ocpMasterPublicIP --network-security-group ocpMasterSecurityGroup
 
 # Create the NIC for OCP infra host
 echo "Creating NIC for OCP infra Host..."
-az network nic create -g $VNET_RG_NAME --name infraNIC --vnet-name $VNET_NAME --subnet $SUBNET_NAME --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
+az network nic create -g $OCP_RG_NAME --name infraNIC --subnet $subnetId --public-ip-address ocpInfraPublicIP --network-security-group ocpInfraSecurityGroup
 
 # Create the availability set
 echo "Creating the availability set..."
@@ -122,7 +127,7 @@ az vm create -g $OCP_RG_NAME --name "$OCP_MASTER_HOST.$OCP_DOMAIN_SUFFIX" --loca
 
 # Create the OCP Infra VM
 echo "Creating the OCP Infra VM..."
-az vm create -g $OCP_RG_NAME --name "$OCP_INFRA_HOST.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_SIZE_INFRA --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
+az vm create -g $OCP_RG_NAME --name "$OCP_INFRA_HOST.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --availability-set ocpAvailabilitySet --nics infraNIC --image $VM_IMAGE --size $IMAGE_SIZE_MASTER --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub
 
 # Create the OCP Node VMs...
 echo "OCP node count=[$1]..."
@@ -130,7 +135,7 @@ i=1
 while [ $i -le $1 ]
 do
   echo "Creating OCP Node VM $i..."
-  az vm create -g $OCP_RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --vnet-name $VNET_NAME --subnet $SUBNET_NAME --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_SIZE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
+  az vm create -g $OCP_RG_NAME --name "ocp-node$i.$OCP_DOMAIN_SUFFIX" --location $RG_LOCATION --subnet $subnetId --availability-set ocpAvailabilitySet --image $VM_IMAGE --size $IMAGE_SIZE_NODE --admin-username ocpuser --ssh-key-value ~/.ssh/id_rsa.pub --public-ip-address ""
   i=$(( $i + 1 ))
 done
 
