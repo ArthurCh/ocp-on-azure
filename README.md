@@ -2,6 +2,7 @@
 Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP cluster on Azure.  For deploying a production grade highly available OpenShift CP cluster on Azure, refer to this [Microsoft GitHub](https://github.com/Microsoft/openshift-container-platform) project.
 
 **Deployment Topology**
+
 ![alt tag](./images/OCP-Azure-Deploy.jpg)
 
 **Prerequisites**
