@@ -44,7 +44,7 @@ az group create --name $OCP_RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 
 # Create a key vault and store the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault $KEY_VAULT_NAME ..."
-az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment
+az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment true
 az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
 
 # Create the VNET and Subnet
