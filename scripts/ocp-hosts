@@ -24,7 +24,9 @@ ansible_become=true
 openshift_deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 openshift_clock_enabled=true
-openshift_master_dynamic_provisioning_enabled=True
+
+# Uncomment this variable for provisioning cloud provider plugins
+#openshift_master_dynamic_provisioning_enabled=True
 
 # Change the Master API and Console port to 443
 openshift_master_api_port=443
@@ -40,14 +42,15 @@ openshift_metrics_install_metrics=true
 openshift_metrics_cassandra_storage_type=emptydir
 #openshift_metrics_hawkular_hostname=ocp-infra.ocp-dev.com
 
+# Uncomment the following variables for configuring logging.  Keep in mind, persistent storage (NFS or a cloud storage) is required.
 # Logging configuration
-openshift_logging_install_logging=true
-openshift_logging_es_pvc_dynamic=true
-openshift_logging_es_cluster_size=3
-openshift_logging_es_nodeselector={'region':'infra'}
-openshift_logging_kibana_nodeselector={'region':'infra'}
-openshift_logging_curator_nodeselector={'region':'infra'}
-openshift_logging_es_number_of_replicas=1
+#openshift_logging_install_logging=true
+#openshift_logging_es_pvc_dynamic=true
+#openshift_logging_es_cluster_size=3
+#openshift_logging_es_nodeselector={'region':'infra'}
+#openshift_logging_kibana_nodeselector={'region':'infra'}
+#openshift_logging_curator_nodeselector={'region':'infra'}
+#openshift_logging_es_number_of_replicas=1
 
 # Added these variables to get past the image pull issue!
 oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
