@@ -47,15 +47,19 @@ echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment true
 az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
 
-# Create the VNET and Subnet
-if [ $VNET_CREATE = "Yes" ] || [ $VNET_CREATE = "yes" ]
-then
-  # Create the VNET + Subnet in the same RG as the OCP resources
-  echo "Creating the VNET and Subnet..."
-  az network vnet create --resource-group $OCP_RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
+if [ "$VNET_CREATE" ]; then
+	# Create the VNET and Subnet
+	if [ $VNET_CREATE = "Yes" ] || [ $VNET_CREATE = "yes" ]
+	then
+  	  # Create the VNET + Subnet in the same RG as the OCP resources
+  	  echo "Creating the VNET and Subnet..."
+  	  az network vnet create --resource-group $OCP_RG_NAME --name $VNET_NAME --address-prefix $VNET_ADDR_PREFIX --subnet-name $SUBNET_NAME --subnet-prefix $SUBNET_ADDR_PREFIX
+	else
+  	  echo "Creating Subnet for VNET $VNET_NAME"
+	  az network vnet subnet create --address-prefix $SUBNET_ADDR_PREFIX --name $SUBNET_NAME --resource-group $VNET_RG_NAME --vnet-name $VNET_NAME
+	fi
 else
-  echo "Creating Subnet for VNET $VNET_NAME"
-  az network vnet subnet create --address-prefix $SUBNET_ADDR_PREFIX --name $SUBNET_NAME --resource-group $VNET_RG_NAME --vnet-name $VNET_NAME
+	echo "VNET/Subnet will not be created.  These resources must exist in RG=[$VNET_RG_NAME]."
 fi
 
 # Create the public ip for the bastion host
