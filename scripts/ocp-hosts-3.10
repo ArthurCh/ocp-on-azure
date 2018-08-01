@@ -66,7 +66,8 @@ oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 openshift_examples_modify_imagestreams=true
 
 # Enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
-openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+# ID07312018.n 'filename' is no longer supported. The file will be placed (or expected to be in this directory) in /etc/origin/master/htpaswd
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 
 # Host group for masters
 [masters]
