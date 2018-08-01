@@ -79,7 +79,7 @@ ocp-master.onemtcprod.net
 
 # Host group for nodes, includes region info
 [nodes]
-ocp-master.onemtcprod.net openshift_schedulable=True openshift_node_group_name='node-config-master' openshift_hostname=ocp-master.onemtcprod.net
+ocp-master.onemtcprod.net openshift_node_group_name='node-config-master' openshift_hostname=ocp-master.onemtcprod.net
 ocp-infra.onemtcprod.net openshift_node_group_name='node-config-infra' openshift_hostname=ocp-infra.onemtcprod.net
 ocp-node1.onemtcprod.net openshift_node_group_name='node-config-compute' openshift_hostname=ocp-node1.onemtcprod.net
 ocp-node2.onemtcprod.net openshift_node_group_name='node-config-compute' openshift_hostname=ocp-node2.onemtcprod.net
