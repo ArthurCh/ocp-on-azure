@@ -3,5 +3,5 @@
 rh_account_name: 
 rh_account_pwd: 
 pool_id: 
-ocp_ver: 3.9
-docker_ver: 1.13.1
+ocp_ver: "3.10"
+docker_ver: "1.13.1"

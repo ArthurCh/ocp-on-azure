@@ -14,17 +14,31 @@
 masters
 nodes
 etcd
+nfs
 
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
 # SSH user, this user should allow ssh based auth without requiring a password
 ansible_ssh_user=ocpuser
 
+# ID07312018.n
+# Whitelist images which the OAB can access from the OpenShift Container Catalog
+ansible_service_broker_local_registry_whitelist=['.*-apb$']
+
 # If ansible_ssh_user is not root, ansible_become must be set to true
 ansible_become=true
 
-
 # ID07312018.n
+# Define variables to configure persistent nfs storage (PV) for OAB etcd instance.
+openshift_hosted_etcd_storage_kind=nfs
+openshift_hosted_etcd_storage_nfs_options="*(rw,root_squash,sync,no_wdelay)"
+openshift_hosted_etcd_storage_nfs_directory=/opt/osev3-etcd 
+openshift_hosted_etcd_storage_volume_name=etcd-vol2 
+openshift_hosted_etcd_storage_access_modes=["ReadWriteOnce"]
+openshift_hosted_etcd_storage_volume_size=1G
+openshift_hosted_etcd_storage_labels={'storage': 'etcd'}
+
+# ID07312018.n : Node groups are new in v3.10
 # Define node groups
 openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true', 'region=primary', 'zone=east']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true','region=infra', 'zone=default']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true', 'region=primary', 'zone=east'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
 
@@ -66,7 +80,7 @@ oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 openshift_examples_modify_imagestreams=true
 
 # Enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
-# ID07312018.n 'filename' is no longer supported. The file will be placed (or expected to be in this directory) in /etc/origin/master/htpaswd
+# ID07312018.n 'filename' is no longer supported. The htpasswd file will be placed (or expected to be in this directory) in /etc/origin/master
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 
 # Host group for masters
@@ -75,6 +89,11 @@ ocp-master.onemtcprod.net
 
 # Host group for etcd
 [etcd]
+ocp-master.onemtcprod.net
+
+# ID07312018.n
+# Host group for OAB's etcd instance
+[nfs]
 ocp-master.onemtcprod.net
 
 # Host group for nodes, includes region info

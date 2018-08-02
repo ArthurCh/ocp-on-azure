@@ -35,6 +35,8 @@
     name: '*'
     state: latest
 
+# IMPORTANT: If you are installing OpenShift v3.9 or lower, then you will need to install 'atomic-openshift-utils' package instead of 'openshift-ansible' package.  This script defaults to installing 'openshift-ansible' package for OpenShift v3.10+
+
 - name: Install OpenShift utilities
   yum:
     name: openshift-ansible

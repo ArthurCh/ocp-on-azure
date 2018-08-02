@@ -100,15 +100,17 @@ $ cd ocp-on-azure/ansible-deploy/
 
 6. Update `hosts` file with the IP Addresses (or DNS names) of all OpenShift nodes (Master + Infrastructure + Application).
 
-7. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.
+7. Review `group_vars/ocp-servers` file and specify values for **rh_account_name**, **rh_account_pwd** & **pool_id** variables.  Also, specify the OpenShift CP and docker runtime versions in the **ocp_ver** and **docker_ver** variables respectively.
 
-8. Check if Ansible is able to connect to all OpenShift nodes.
+8. Update the ansible task script 'ansible-deploy/roles/install-ocp-preq/tasks/main.yml' in case you are planning to install OpenShift CP v3.9 or lower.  For installing OpenShift v3.9 or lower, package 'atomic-openshift-utils' needs to be installed on all nodes.  Open this script and search for the package by name.  Follow the instructions to install this package.
+
+9. Check if Ansible is able to connect to all OpenShift nodes.
 ```
 # Ping all OpenShift nodes.  You current directory should be 'ocp-on-azure/ansible-deploy' directory.
 $ ansible -i hosts all -m ping
 ```
 
-9. Run syntax check on ansible playbook.  If there are any errors, fix them before proceeding.
+10. Run syntax check on ansible playbook.  If there are any errors, fix them before proceeding.
 ```
 # Ensure you are in sub-directory 'ansible-deploy'.  If not, switch to this directory.
 $ cd ansible-deploy
@@ -117,7 +119,7 @@ $ cd ansible-deploy
 $ ansible-playbook -i hosts install.yml --syntax-check
 ```
 
-10. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 4 nodes).
+11. Run the Ansible playbook `install.yml`.  This command will run for a while (~ 20 mins for 4 nodes).
 ```
 # Run the Ansible playbook
 $ ansible-playbook -i hosts -v install.yml
@@ -131,41 +133,68 @@ ocp-node1.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ocp-node2.devcls.com       : ok=14   changed=12   unreachable=0    failed=0
 ```
 
-11. Login via SSH to the OpenShift **Master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  Before proceeding with OpenShift installation, check the following -
+12. Login via SSH to the OpenShift **Master** node (VM).  The OpenShift installer (Ansible playbook) should be run on this VM/Node.  Before proceeding with OpenShift installation, check the following -
 - Make sure you are able to login to all nodes/VMs (Master + Infrastructure + Application) using SSH
 - All nodes should be resolvable thru their DNS aliases within the VNET (ocpVnet)
 - Passwordless **sudo** access should be configured on all nodes (VMs)
+- For installing OpenShift CP v3.9 (or lower), download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.
+- For installing OpenShift CP v3.10 (or higher), download the Ansible hosts file (`scripts/ocp-hosts-3.10`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.
 
-Download the Ansible hosts file (`scripts/ocp-hosts`) from the `ocp-on-azure` GitHub repository which you forked in a previous step.  You can use **wget** or **curl** to download this file.  See below.
+You can use **wget** or **curl** to download the Ansible hosts file.  See below.
 ```
-# Download the ansible hosts file 'scripts/ocp-hosts'. Substitute your GitHub account name in the command below.
-$ wget https://raw.githubusercontent.com/<Your-GitHub-Account>/ocp-on-azure/master/scripts/ocp-hosts
+# Download the ansible hosts file 'scripts/ocp-hosts-3.10'. Substitute your GitHub account name in the command below.
+# Alternatively, if you are installing OpenShift CP v3.9 (or lower version), download the 'scripts/ocp-hosts' file.
+$ wget https://raw.githubusercontent.com/<Your-GitHub-Account>/ocp-on-azure/master/scripts/ocp-hosts-3.10
 ```
-Review the **ocp-hosts** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes (VM's).  Make other configuration changes as necessary.
+Review the **ocp-hosts-3.10** file and update the hostnames for the OpenShift Master, Infrastructure and Application nodes (VM's).  Make other configuration changes as necessary.  Refer to the [OpenShift CP documentation](https://docs.openshift.com/) for details on configuring other sub-systems thru variables.  The provided script only installs a simple multi-node non-HA cluster with metrics sub-system enabled.  For installing and configuring other sub-systems such as logging, cloud provider plugins for persistent volumes, default storage classes etc, refer to the OpenShift documentation.
 
-12. Run the OpenShift Ansible Playbooks as below.
+13. Run the OpenShift Ansible Playbooks as below.
 - Run the `prerequisites.yml` playbook to run pre-requisite checks
 ```
-# Run the 'prerequisites.yml' playbook to run pre-requisite checks
-$ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+# Run the 'prerequisites.yml' playbook to run pre-requisite checks. Specify the correct Ansible hosts inventory file.
+$ ansible-playbook -i ./ocp-hosts-3.10 /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 ```
 If all the checks pass, you should see the output as below.
 ```
 PLAY RECAP *********************************************************************************************************************************
 localhost                  : ok=11   changed=0    unreachable=0    failed=0   
-ocp-infra.devcls.com       : ok=60   changed=14   unreachable=0    failed=0   
-ocp-master.devcls.com      : ok=74   changed=15   unreachable=0    failed=0   
-ocp-node1.devcls.com       : ok=60   changed=14   unreachable=0    failed=0   
-ocp-node2.devcls.com       : ok=60   changed=14   unreachable=0    failed=0
+ocp-infra.onemtcprod.net   : ok=60   changed=14   unreachable=0    failed=0   
+ocp-master.onemtcprod.net  : ok=74   changed=15   unreachable=0    failed=0   
+ocp-node1.onemtcprod.net   : ok=60   changed=14   unreachable=0    failed=0   
+ocp-node2.onemtcprod.net   : ok=60   changed=14   unreachable=0    failed=0
 ```
 - Next, run the `deploy_cluster.yml` playbook to deploy the OpenShift cluster.  This cluster deployment script should run for approximately 30-40 minutes (~ 4 nodes).
 ```
 # Run the 'deploy_cluster.yml' playbook to deploy the OpenShift cluster
-$ ansible-playbook -i ./ocp-hosts /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+$ ansible-playbook -i ./ocp-hosts-3.10 /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 ```
-When the Ansible playbook run finishes, the output should list the status of all executed tasks.  If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
+When the Ansible playbook run finishes, the output should list the status of all executed tasks.  See below.  For OpenShift CP v3.9 (or lower version), you will see a slightly different output.
+```
+PLAY RECAP *********************************************************************************************************************************
+localhost                  : ok=15   changed=0    unreachable=0    failed=0   
+ocp-infra.onemtcprod.net   : ok=119  changed=57   unreachable=0    failed=0   
+ocp-master.onemtcprod.net  : ok=807  changed=327  unreachable=0    failed=0   
+ocp-node1.onemtcprod.net   : ok=119  changed=57   unreachable=0    failed=0   
+ocp-node2.onemtcprod.net   : ok=119  changed=57   unreachable=0    failed=0   
 
-13.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
+
+INSTALLER STATUS ***************************************************************************************************************************
+Initialization              : Complete (0:00:23)
+Health Check                : Complete (0:02:10)
+Node Bootstrap Preparation  : Complete (0:18:59)
+etcd Install                : Complete (0:01:35)
+NFS Install                 : Complete (0:00:24)
+Master Install              : Complete (0:05:30)
+Master Additional Install   : Complete (0:02:10)
+Node Join                   : Complete (0:03:48)
+Hosted Install              : Complete (0:01:04)
+Web Console Install         : Complete (0:00:35)
+Metrics Install             : Complete (0:03:10)
+Service Catalog Install     : Complete (0:02:10)
+```
+If there are any tasks in failed state, review the exception messages, update the playbook (`install.yml`) and re-run the playbook.
+
+14.  OpenShift Web Console can be accessed @ - `https://<OpenShift Master Public Hostname>/`
 
 Substitute the DNS name of the OpenShift cluster **Master Node** in the URL above.
 
