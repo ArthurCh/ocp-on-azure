@@ -8,7 +8,6 @@
 # ID06272018: Updated inventory to deploy logging components
 # ID07312018: Incorporated v3.10 enhancements to this inventory file
 
-
 # Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
 masters
@@ -73,11 +72,13 @@ openshift_metrics_cassandra_storage_type=emptydir
 #openshift_logging_curator_nodeselector={'region':'infra'}
 #openshift_logging_es_number_of_replicas=1
 
-# Added these variables to get past the image pull issue!
-oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
-oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
-oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
-openshift_examples_modify_imagestreams=true
+# Set the following variables to specify a private container registry other than the default (registry.access.redhat.com)
+#oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
+#oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
+# Set the alternate image location.
+#oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+# Set to true if pointing to an image registry other than the default (registry.access.redhat.com)
+#openshift_examples_modify_imagestreams=true
 
 # Enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
 # ID07312018.n 'filename' is no longer supported. The htpasswd file will be placed (or expected to be in this directory) in /etc/origin/master
