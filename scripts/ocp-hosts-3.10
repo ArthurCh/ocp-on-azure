@@ -75,7 +75,7 @@ openshift_metrics_cassandra_storage_type=emptydir
 # Set the following variables to specify a private container registry other than the default (registry.access.redhat.com)
 #oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
 #oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
-# Set the alternate image location.
+# Set the alternate container image registry location.
 #oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
 # Set to true if pointing to an image registry other than the default (registry.access.redhat.com)
 #openshift_examples_modify_imagestreams=true
