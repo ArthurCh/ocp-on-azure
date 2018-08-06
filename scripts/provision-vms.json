@@ -1,0 +1,167 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+	"OCP_RG_NAME": {
+		"type": "string",
+		"defaultValue": "rh-ocp39-rg",
+		"metadata": {
+			"description": "Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed."
+		}
+	},
+	"RG_LOCATION": {
+		"type": "string",
+		"defaultValue": "westus",
+		"allowedValues": [
+			"eastus",
+			"eastus2",
+			"westus",
+			"westus2",
+			"centralus"
+		],
+		"metadata": {
+			"description": "Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ..."
+		}
+	},
+	"TENANT_ID": {
+		"type": "string",
+		"metadata": {
+			"description": "Azure AD tenant ID used for authenticating requests to the key vault"
+		}
+	},
+	"RG_TAGS": {
+		"type": "string",
+		"defaultValue": "CreatedBy=AdminUser",
+		"metadata": {
+			"description": "Space separated tags in '[name=value]' format. These tags are assigned to the resource group."
+		}
+	},
+	"KEY_VAULT_NAME": {
+		"type": "string",
+		"defaultValue": "RH-OCP-KEY-VAULT",
+		"metadata": {
+			"description": "Name of the key vault where the SSH private key to access the VM's will be stored"
+		}
+	},
+	"IMAGE_SIZE_MASTER": {
+		"type": "string",
+		"defaultValue": "Standard_B2ms",
+		"metadata": {
+			"description": "Azure VM Image Size for OpenShift Master nodes"
+		}
+	},
+	"IMAGE_SIZE_INFRA": {
+		"type": "string",
+		"defaultValue": "Standard_B2ms",
+		"metadata": {
+			"description": "Azure VM Image Size for Infrastructure nodes"
+		}
+	},
+	"IMAGE_SIZE_NODE": {
+		"type": "string",
+		"defaultValue": "Standard_B2ms",
+		"metadata": {
+			"description": "Azure VM Image Size for OpenShift Application nodes"
+		}
+	},
+	"VM_IMAGE": {
+		"type": "string",
+		"defaultValue": "RedHat:RHEL:7-RAW:latest",
+		"metadata": {
+			"description": "Operating system image to install on all VMs"
+		}
+	},
+	"BASTION_HOST": {
+		"type": "string",
+		"defaultValue": "ocp-bastion",
+		"metadata": {
+			"description": "Name of the Bastion host"
+		}
+	},
+	"OCP_MASTER_HOST": {
+		"type": "string",
+		"defaultValue": "ocp-master",
+		"metadata": {
+			"description": "Name of the OpenShift Master host"
+		}
+	},
+	"OCP_INFRA_HOST": {
+		"type": "string",
+		"defaultValue": "ocp-infra",
+		"metadata": {
+			"description": "Name of the OpenShift Infrastructure host"
+		}
+	},
+	"VNET_RG_NAME": {
+		"type": "string",
+		"defaultValue": "rh-ocp39-rg",
+		"metadata": {
+			"description": "Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No'"
+		}
+	},
+	"VNET_CREATE": {
+		"type": "string",
+		"defaultValue": "YES",
+		"metadata": {
+			"description": "Empty: VNET and Subnet resources must exist in resource group VNET_RG_NAME. These resources will not be created. Yes: VNET and Subnet resources in the resource group specified by OCP_RG_NAME will be created. The values specified in both OCP_RG_NAME and VNET_RG_NAME must be the same. No: A subnet in an existing virtual network specified by VNET_NAME in resource group VNET_RG_NAME will be created. Both VNET resource group and virtual network should already exist."
+		}
+	},
+	"VNET_NAME": {
+		"type": "string",
+		"defaultValue": "ocp39Vnet",
+		"metadata": {
+			"description": "Name of the VNET"
+		}
+	},
+	"VNET_ADDR_PREFIX": {
+		"type": "string",
+		"defaultValue": "192.168.0.0/16",
+		"metadata": {
+			"description": "Network segment for virtual network"
+		}
+	},
+	"SUBNET_NAME": {
+		"type": "string",
+		"defaultValue": "ocpSubnet",
+		"metadata": {
+			"description": "Name of the subnet"
+		}
+	},
+	"SUBNET_ADDR_PREFIX": {
+		"type": "string",
+		"defaultValue": "192.168.122.0/24",
+		"metadata": {
+			"description": "Network segment for subnet where all OpenShift node VM's will be provisioned"
+		}
+	},
+	"OCP_DOMAIN_SUFFIX": {
+		"type": "string",
+		"defaultValue": "devcls.com",
+		"metadata": {
+			"description": "Domain suffix for node hostnames in the OpenShift cluster (cluster node hostnames)"
+		}
+	}
+    },
+    "variables": {
+	"vnetId": "[resourceId(parameters('VNET_RG_NAME'), 'Microsoft.Network/virtualNetworks', parameters('VNET_NAME'))]",
+	"subnetId": "[concat(variables('vnetID'),'/subnets/', parameters('SUBNET_NAME'))]"
+    },
+    "functions": [ ],
+    "resources": [
+	{
+		"apiVersion": "2016-10-01",
+		"type": "Microsoft.KeyVault/vaults",
+		"name": "[parameters('KEY_VAULT_NAME')]",
+		"location": "[resourceGroup().location]",
+		"properties": {
+			"tenantId": "[subscription().tenantId]",
+			"sku": {
+				"family": "A",
+				"name": "standard"
+			},
+			"enabledForDeployment": "true"
+		}
+	}
+    ],
+    "outputs": {  }
+}

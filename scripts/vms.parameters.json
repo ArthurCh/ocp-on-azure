@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+     "OCP_RG_NAME": {
+         "value": "rh-ocp39-rg"
+     },
+     "RG_LOCATION": {
+         "value": "westus"
+     },
+     "TENANT_ID": {
+         "value": ""
+     },
+     "RG_TAGS": {
+         "value": "CreatedBy=ganrad"
+     },
+     "KEY_VAULT_NAME": {
+         "value": "RH-OCP-KEY-VAULT"
+     },
+     "IMAGE_SIZE_MASTER": {
+         "value": "Standard_B2ms"
+     },
+     "IMAGE_SIZE_INFRA": {
+         "value": "Standard_B2ms"
+     },
+     "IMAGE_SIZE_NODE": {
+         "value": "Standard_B2ms"
+     },
+     "VM_IMAGE": {
+         "value": "RedHat:RHEL:7-RAW:latest"
+     },
+     "BASTION_HOST": {
+         "value": "ocp-bastion"
+     },
+     "OCP_MASTER_HOST": {
+         "value": "ocp-master"
+     },
+     "OCP_INFRA_HOST": {
+         "value": "ocp-infra"
+     },
+     "VNET_RG_NAME": {
+         "value": "rh-ocp39-rg"
+     },
+     "VNET_CREATE": {
+         "value": "Yes"
+     },
+     "VNET_NAME": {
+         "value": "ocp39Vnet"
+     },
+     "VNET_ADDR_PREFIX": {
+         "value": "192.168.0.0/16"
+     },
+     "SUBNET_NAME": {
+         "value": "ocp39Subnet"
+     },
+     "SUBNET_ADDR_PREFIX": {
+         "value": "192.168.122.0/24"
+     },
+     "OCP_DOMAIN_SUFFIX": {
+         "value": "ocp-dev.com"
+     }
+  }
+}
