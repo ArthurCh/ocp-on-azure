@@ -17,6 +17,15 @@
      "KEY_VAULT_NAME": {
          "value": "RH-OCP-KEY-VAULT"
      },
+     "KEY_SECRET_NAME": {
+         "value": "ocpNodeKey"
+     },
+     "KEY_SECRET_VALUE": {
+	"value": "xyz"
+     },
+     "SSH_PUBLIC_KEY": {
+	"value": "xyz"
+     },
      "IMAGE_SIZE_MASTER": {
          "value": "Standard_B2ms"
      },
@@ -25,9 +34,6 @@
      },
      "IMAGE_SIZE_NODE": {
          "value": "Standard_B2ms"
-     },
-     "VM_IMAGE": {
-         "value": "RedHat:RHEL:7-RAW:latest"
      },
      "BASTION_HOST": {
          "value": "ocp-bastion"
