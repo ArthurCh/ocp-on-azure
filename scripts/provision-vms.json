@@ -34,7 +34,7 @@
 		"type": "string",
 		"defaultValue": "",
 		"metadata": {
-			"description": "Object ID of the AD user. Get using Get-AzureRmADUser or 'az ad usershow' CLI command"
+			"description": "Object ID of the AD user. Get using Get-AzureRmADUser or 'az ad user show' CLI command"
 		}
 	},
 	"RG_TAGS": {
@@ -428,13 +428,15 @@
 							"id": "[resourceId('Microsoft.Network/publicIPAddresses','ocpBastionPublicIP')]"
 						},
 						"privateIPAllocationMethod": "Dynamic",
-						"privateIPAddressVersion": "IPV4"
+						"privateIPAddressVersion": "IPV4",
+						"primary": "true"
 					},
 					"name": "IPConfig1"
 				}
 			],
 			"enableAcceleratedNetworking": "false",
-			"enableIPforwarding": "false"
+			"enableIPforwarding": "false",
+			"primary": "true"
 		},
 		"dependsOn": [
 			"[resourceId('Microsoft.Network/publicIPAddresses', 'ocpBastionPublicIP')]",
@@ -462,13 +464,15 @@
 							"id": "[resourceId('Microsoft.Network/publicIPAddresses','ocpMasterPublicIP')]"
 						},
 						"privateIPAllocationMethod": "Dynamic",
-						"privateIPAddressVersion": "IPV4"
+						"privateIPAddressVersion": "IPV4",
+						"primary": "true"
 					},
 					"name": "IPConfig1"
 				}
 			],
 			"enableAcceleratedNetworking": "false",
-			"enableIPforwarding": "false"
+			"enableIPforwarding": "false",
+			"primary": "true"
 		},
 		"dependsOn": [
 			"[resourceId('Microsoft.Network/publicIPAddresses', 'ocpMasterPublicIP')]",
@@ -496,13 +500,15 @@
 							"id": "[resourceId('Microsoft.Network/publicIPAddresses','ocpInfraPublicIP')]"
 						},
 						"privateIPAllocationMethod": "Dynamic",
-						"privateIPAddressVersion": "IPV4"
+						"privateIPAddressVersion": "IPV4",
+						"primary": "true"
 					},
 					"name": "IPConfig1"
 				}
 			],
 			"enableAcceleratedNetworking": "false",
-			"enableIPforwarding": "false"
+			"enableIPforwarding": "false",
+			"primary": "true"
 		},
 		"dependsOn": [
 			"[resourceId('Microsoft.Network/publicIPAddresses', 'ocpInfraPublicIP')]",
@@ -523,13 +529,15 @@
 							"id": "[variables('subnetId')]"
 						},
 						"privateIPAllocationMethod": "Dynamic",
-						"privateIPAddressVersion": "IPV4"
+						"privateIPAddressVersion": "IPV4",
+						"primary": "true"
 					},
 					"name": "IPConfig1"
 				}
 			],
 			"enableAcceleratedNetworking": "false",
-			"enableIPforwarding": "false"
+			"enableIPforwarding": "false",
+			"primary": "true"
 		},
 		"copy": {
 			"name": "appNodeNics",
