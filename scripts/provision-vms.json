@@ -23,13 +23,6 @@
 			"description": "Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ..."
 		}
 	},
-	"TENANT_ID": {
-		"type": "string",
-		"defaultValue": "",
-		"metadata": {
-			"description": "Azure AD tenant ID used for authenticating requests to the key vault"
-		}
-	},
 	"OBJECT_ID": {
 		"type": "string",
 		"defaultValue": "",
@@ -123,7 +116,7 @@
 		"type": "string",
 		"defaultValue": "rh-ocp39-rg",
 		"metadata": {
-			"description": "Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No'"
+			"description": "Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No or empty'"
 		}
 	},
 	"VNET_CREATE": {

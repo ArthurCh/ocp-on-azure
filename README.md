@@ -25,37 +25,41 @@ Switch to the `ocp-on-azure` directory.
 # Switch directory
 $ cd ocp-on-azure
 ```
-Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+There are two options for provisioning the infrastructure resources on Azure.  Read below.
 
-VAR NAME | DEFAULT VALUE | DESCRIPTION
--------- | ------------- | -----------
-OCP_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed
-RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
-RG_TAGS | CreatedBy=[Login Name] | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
-KEY_VAULT_NAME | ocpKeyVault | Name of the key vault to store SSH private key
-IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nodes
-IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
-IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
-VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
-BASTION_HOST | ocp-bastion | Name of the Bastion host
-OCP_MASTER_HOST | ocp-master | Name of the OpenShift Master host
-OCP_INFRA_HOST | ocp-infra | Name of the OpenShift Infrastructure host
-VNET_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No'
-VNET_CREATE | Yes | **Empty:** VNET and Subnet resources must exist in resource group **VNET_RG_NAME**.  These resources will not be created.  **Yes:** VNET and Subnet resources in the resource group specified by **OCP_RG_NAME** will be created.  The values specified in both OCP_RG_NAME and VNET_RG_NAME must be the same.  **No:** A subnet in an existing virtual network specified by **VNET_NAME** in resource group **VNET_RG_NAME** will be created.  Both VNET resource group and virtual network should already exist.
-VNET_NAME | ocp39Vnet | Name of the VNET
-VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
-SUBNET_NAME | ocpSubnet | Name of the subnet
-SUBNET_ADDR_PREFIX | 192.168.122.0/24 | Network segment for subnet where all OpenShift node VM's will be provisioned
-OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for node hostnames in the OpenShift cluster (cluster node hostnames)
+  - Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
-After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
+    VAR NAME | DEFAULT VALUE | DESCRIPTION
+    -------- | ------------- | -----------
+    OCP_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group where the OpenShift Cluster resources will be deployed
+    RG_LOCATION | westus | Region (name) where the IaaS resources should be provisioned eg., eastus, centralus, westus ...
+    RG_TAGS | CreatedBy=[Login Name] | Space separated tags in '[name=value]' format. These tags are assigned to the resource group.
+    KEY_VAULT_NAME | ocpKeyVault | Name of the key vault to store SSH private key
+    IMAGE_SIZE_MASTER | Standard_B2ms | Azure VM Image Size for OpenShift master nodes
+    IMAGE_SIZE_INFRA | Standard_B2ms | Azure VM Image Size for Infrastructure nodes
+    IMAGE_SIZE_NODE | Standard_B2ms | Azure VM Image Size for Application nodes
+    VM_IMAGE | RedHat:RHEL:7-RAW:latest | Operating system image for all VMs
+    BASTION_HOST | ocp-bastion | Name of the Bastion host
+    OCP_MASTER_HOST | ocp-master | Name of the OpenShift Master host
+    OCP_INFRA_HOST | ocp-infra | Name of the OpenShift Infrastructure host
+    VNET_RG_NAME | rh-ocp39-rg | Name of the Azure Resource Group of virtual network when VNET_CREATE is set to 'No'
+    VNET_CREATE | Yes | **Empty:** VNET and Subnet resources must exist in resource group **VNET_RG_NAME**.  These resources will not be created.  **Yes:** VNET and Subnet resources in the resource group specified by **OCP_RG_NAME** will be created.  The values specified in both OCP_RG_NAME and VNET_RG_NAME must be the same.  **No:** A subnet in an existing virtual network specified by **VNET_NAME** in resource group **VNET_RG_NAME** will be created.  Both VNET resource group and virtual network should already exist.
+    VNET_NAME | ocp39Vnet | Name of the VNET
+    VNET_ADDR_PREFIX | 192.168.0.0/16 | Network segment for virtual network
+    SUBNET_NAME | ocpSubnet | Name of the subnet
+    SUBNET_ADDR_PREFIX | 192.168.122.0/24 | Network segment for subnet where all OpenShift node VM's will be provisioned
+    OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for node hostnames in the OpenShift cluster (cluster node hostnames)
+
+    After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
 ```
-# Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes to deploy in cluster.
-$ ./scripts/provision-vms.sh <no. of nodes>
+    # Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes to deploy in cluster.
+    $ ./scripts/provision-vms.sh <no. of nodes>
 ```
-The script should print the following message upon successful creation of all infrastructure resources.
+    The script should print the following message upon successful creation of all infrastructure resources.
 ```
-All OCP infrastructure resources created OK.
+    All OCP infrastructure resources created OK.
+
+    - Review the parameters in file scripts/vms.provision.json.  Update the values as necessary.
 ```
 
 2. Retrieve the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
