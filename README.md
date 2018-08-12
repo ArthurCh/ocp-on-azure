@@ -25,7 +25,7 @@ Switch to the `ocp-on-azure` directory.
 # Switch directory
 $ cd ocp-on-azure
 ```
-There are two options for provisioning the infrastructure resources on Azure.  Read below.
+There are two options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
   - Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
 
@@ -51,16 +51,17 @@ There are two options for provisioning the infrastructure resources on Azure.  R
     OCP_DOMAIN_SUFFIX | devcls.com | Domain suffix for node hostnames in the OpenShift cluster (cluster node hostnames)
 
     After updating `provision-vms.sh`, run the script in a terminal window.  This shell script will provision all the Azure infrastructure resources required to deploy the OpenShift cluster.
-```
+    ```
     # Run the script 'scripts/provision-vms.sh'.  Specify, no. of application nodes to deploy in cluster.
     $ ./scripts/provision-vms.sh <no. of nodes>
-```
+    ```
     The script should print the following message upon successful creation of all infrastructure resources.
-```
+    ```
     All OCP infrastructure resources created OK.
 
-    - Review the parameters in file scripts/vms.provision.json.  Update the values as necessary.
-```
+    ```
+
+    - Review the parameters in file scripts/vms.provision.json.  Update the values as necessary. Open a terminal window and run the following command to provision all required infrastructure resources on Azure.
 
 2. Retrieve the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
 ```
