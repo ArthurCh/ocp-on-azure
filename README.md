@@ -7,7 +7,8 @@ Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP clu
 
 **Prerequisites**
 - [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) installed on a workstation/PC 
-- An Azure user account with "Owner" role permissions either at the **Subscription** or **Resource Group** levels
+- An Azure user account with "Owner" role permissions at the **Subscription** level.
+- Access to a Windows or Linux terminal window.  You **must** be logged into to your Azure account via the CLI before proceeding with the next steps.
 
 **A] Deploy a *non-HA* OpenShift Cluster**
 1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Open a terminal window on your PC and clone this repository (see below).  Make sure you are using the GitHub URL of your forked repository.  
@@ -61,7 +62,7 @@ There are two options for provisioning the infrastructure resources on Azure.  U
 
   ```
 
-  - **Option B:** Review the parameters in the file ``scripts/vms.provision.json``.  Update the values as necessary. Next, review the Azure ARM template file ``scripts/provision-vms.json``.  Open a terminal window and run the following command to provision all required infrastructure resources on Azure.
+  - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Then update the parameter values in the file ``scripts/vms.provision.json`` as necessary. Open a terminal window and run the following CLI command to provision all required infrastructure resources on Azure.
   ```
   # Deploy the ARM template `scripts/provision-vms.sh` using Azure CLI.  Substitute the correct value for the resource group.
   az group deployment create --verbose --resource-group rh-ocp310-rg --template-file ./scripts/provision-vms.json --parameters @./scripts/vms.parameters.json
