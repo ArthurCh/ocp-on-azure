@@ -62,10 +62,12 @@ There are two options for provisioning the infrastructure resources on Azure.  U
 
   ```
 
-  - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Then update the parameter values in the file ``scripts/vms.provision.json`` as necessary. Open a terminal window and run the following CLI command to provision all required infrastructure resources on Azure.
+  - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.provision.json`` as necessary.
+
+  Open a terminal window and run the following CLI command to provision all required infrastructure resources on Azure.
   ```
   # Deploy the ARM template `scripts/provision-vms.sh` using Azure CLI.  Substitute the correct value for the resource group.
-  az group deployment create --verbose --resource-group rh-ocp310-rg --template-file ./scripts/provision-vms.json --parameters @./scripts/vms.parameters.json
+  $ az group deployment create --verbose --resource-group rh-ocp310-rg --template-file ./scripts/provision-vms.json --parameters @./scripts/vms.parameters.json
   ```
   Upon successful execution of the ARM template, the following message should be printed in the output.
   ```
