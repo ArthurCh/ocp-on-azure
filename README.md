@@ -27,7 +27,7 @@ $ cd ocp-on-azure
 ```
 There are two options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
-  - Review and update the following variables in the script `scripts/provision-vms.sh` as necessary.  See below.
+  - **Option A:** Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
 
     VAR NAME | DEFAULT VALUE | DESCRIPTION
     -------- | ------------- | -----------
@@ -61,7 +61,21 @@ There are two options for provisioning the infrastructure resources on Azure.  U
 
     ```
 
-    - Review the parameters in file scripts/vms.provision.json.  Update the values as necessary. Open a terminal window and run the following command to provision all required infrastructure resources on Azure.
+    - **Option B:** Review the parameters in the file ``scripts/vms.provision.json``.  Update the values as necessary. Next, review the Azure ARM template file ``scripts/provision-vms.json``.  Open a terminal window and run the following command to provision all required infrastructure resources on Azure.
+    ```
+    # Deploy the ARM template `scripts/provision-vms.sh` using Azure CLI.  Substitute the correct value for the resource group.
+    az group deployment create --verbose --resource-group rh-ocp310-rg --template-file ./scripts/provision-vms.json --parameters @./scripts/vms.parameters.json
+    ```
+    Upon successful execution of the ARM template, the following message should be printed in the output.
+    ```
+      "provisioningState": "Succeeded",
+      "template": null,
+      "templateHash": "7624771502800391155",
+      "templateLink": null,
+      "timestamp": "2018-08-10T21:05:50.389722+00:00"
+    },
+    "resourceGroup": "rh-ocp310-rg"
+    ```
 
 2. Retrieve the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
 ```
