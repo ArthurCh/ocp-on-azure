@@ -62,7 +62,7 @@ There are two options for provisioning the infrastructure resources on Azure.  U
 
     ```
 
-  - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.provision.json`` as necessary.
+  - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.parameters.json`` as necessary.
 
     Open a terminal window and run the following CLI command to provision all required infrastructure resources on Azure.
     ```
