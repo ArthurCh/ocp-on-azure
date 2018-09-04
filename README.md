@@ -10,7 +10,7 @@ Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP clu
 - An Azure user account with "Owner" role permissions at the **Subscription** level.
 - Access to a Windows or Linux terminal window.  You **must** be logged into to your Azure account via the CLI before proceeding with the next steps.
 
-This project assumes readers have a basic understanding of the installation process (steps) for Red Hat OpenShift Container Platform.  As such, OpenShift exposes multiple parameters (Ansible variables) for configuring different sub-systems and various aspects of those sub-systems.  To review and/or get a deeper understanding of all the configuration options, refer to the **Installing Clusters** chapter in the [OpenShift Documentation](https://docs.openshift.com/).
+This project assumes readers have prior experience installing Red Hat OpenShift Container Platform and/or have gone thru the installation chapters in the OpenShift documentation.  As such, OpenShift exposes multiple parameters (Ansible variables) for configuring different sub-systems and various aspects of those sub-systems.  To review and/or get a deeper understanding of all the configuration options, refer to the **Installing Clusters** chapter in the [OpenShift Documentation](https://docs.openshift.com/).
 
 **A] Deploy a *non-HA* OpenShift Cluster**
 1. Fork this [GitHub repository](https://github.com/ganrad/ocp-on-azure) to your GitHub account.  Open a terminal window on your PC and clone this repository (see below).  Make sure you are using the GitHub URL of your forked repository.  
