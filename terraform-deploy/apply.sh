@@ -11,6 +11,7 @@ export SSH_PUB_KEY=$7
 
 cd $1
 echo "Switched directory to => $1"
+echo "Dir list => " | ls -l
 
 echo "Executing Terraform Init ..."
 terraform apply -auto-approve -var ssh_key=$7

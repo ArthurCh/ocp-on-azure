@@ -12,5 +12,5 @@ cd $1
 echo "Switched directory to => $1"
 
 echo "Executing Terraform Init ..."
-terraform init  -backend-config=backend.tfvars
+terraform init  -backend-config=./azurerm/backend.tfvars
 echo "Done"
