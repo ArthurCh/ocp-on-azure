@@ -5,6 +5,13 @@
 # NOTES:
 #
 
+# Configure the Terraform backend provider
+terraform {
+	required_version = ">= 0.11"
+
+	backend "azurerm" {}
+}
+
 # Configure the Azure Resource Provider
 provider "azurerm" {}
 
