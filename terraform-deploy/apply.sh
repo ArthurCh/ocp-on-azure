@@ -10,8 +10,9 @@ echo "SSH_PUBLIC_KEY=$7"
 
 cd $1/terraform-deploy/azurerm
 echo "Switched directory to => $PWD"
-echo "Dir list => " | ls -l
+echo "Dir list => "
+ls -l
 
 echo "Executing Terraform Init ..."
-terraform apply -auto-approve -var ssh_key=$7
+terraform apply -auto-approve -var ssh_key="$7"
 echo "Done"
