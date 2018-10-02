@@ -1,13 +1,17 @@
 #!/bin/bash
-echo "************* Assigning Azure credentials to Env. variables ..."
+echo "************* Assigning Azure credentials to env. variables ..."
 ## execute terrafotm build and sendout to packer-build-output
-export ARM_CLIENT_ID=$1
-export ARM_CLIENT_SECRET=$2
-export ARM_SUBSCRIPTION_ID=$3
-export ARM_TENANT_ID=$4
-export ARM_ACCESS_KEY=$5
-export SSH_PUB_KEY=$6
+export ARM_CLIENT_ID=$2
+export ARM_CLIENT_SECRET=$3
+export ARM_SUBSCRIPTION_ID=$4
+export ARM_TENANT_ID=$5
+export ARM_ACCESS_KEY=$6
+echo "ARM_ACCESS_KEY=$ARM_ACCESS_KEY"
+export SSH_PUB_KEY=$7
+
+cd $1
+echo "Switched directory to => $1"
 
 echo "Executing Terraform Init ..."
-terraform apply -auto-approve -var ssh_key=$6 ./terraform-deploy
+terraform apply -auto-approve -var ssh_key=$7
 echo "Done"
