@@ -2,5 +2,5 @@
 echo "Current working directory => $PWD"
 
 echo "Executing Terraform Destroy ..."
-terraform destroy
+terraform destroy -auto-approve
 echo "Done"
