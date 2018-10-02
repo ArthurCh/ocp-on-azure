@@ -8,5 +8,5 @@ export ARM_TENANT_ID=$4
 export ARM_ACCESS_KEY=$5
 
 echo "Executing Terraform Init ..."
-terraform init  -backend-config=backend.tfvars
+terraform init  -backend-config=backend.tfvars ./terraform-deploy
 echo "Done"
