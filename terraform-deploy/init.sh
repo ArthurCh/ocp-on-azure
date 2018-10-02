@@ -8,7 +8,7 @@ export ARM_SUBSCRIPTION_ID=$4
 export ARM_TENANT_ID=$5
 export ARM_ACCESS_KEY=$6
 
-cd $1
+cd $1/terraform-deploy
 echo "Switched directory to => $1"
 
 echo "Executing Terraform Init ..."

@@ -9,7 +9,7 @@ export ARM_ACCESS_KEY=$6
 echo "ARM_ACCESS_KEY=$ARM_ACCESS_KEY"
 export SSH_PUB_KEY=$7
 
-cd $1
+cd $1/terraform-deploy
 echo "Switched directory to => $1"
 echo "Dir list => " | ls -l
 
