@@ -8,9 +8,9 @@ export ARM_SUBSCRIPTION_ID=$4
 export ARM_TENANT_ID=$5
 export ARM_ACCESS_KEY=$6
 
-cd $1/terraform-deploy
-echo "Switched directory to => $1"
+cd $1/terraform-deploy/azurerm
+echo "Switched directory to => $PWD"
 
 echo "Executing Terraform Init ..."
-terraform init  -backend-config=./azurerm/backend.tfvars
+terraform init -backend-config=backend.tfvars
 echo "Done"
