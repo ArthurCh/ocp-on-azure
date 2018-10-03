@@ -414,7 +414,7 @@ resource "azurerm_virtual_machine" "ocp_node_vm" {
 	name = "ocp-node-${count.index}.${var.ocp_domain_suffix}"
 	location = "${azurerm_resource_group.ocp_rg.location}"
 	resource_group_name = "${azurerm_resource_group.ocp_rg.name}"
-	network_interface_ids = ["${azurerm_network_interface.ocp_app_nic.*.id}[count.index]"]
+	network_interface_ids = ["${azurerm_network_interface.ocp_app_nic.*.id[count.index]}"]
 	availability_set_id = "${azurerm_availability_set.ocp_availability_set.id}"
 	vm_size = "${var.image_size_node}"
 	count = "${var.ocp_app_node_count}"
