@@ -9,5 +9,5 @@ echo "Current working directory => $PWD"
 
 echo "Executing Terraform Destroy ..."
 # Provide a dummy value for ssh_key variable!
-terraform destroy -auto-approve -var ssh_key="xyz"
+terraform destroy -auto-approve
 echo "Done"

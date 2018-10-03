@@ -22,6 +22,9 @@ variable "image_size_node" {
 	default = "Standard_B2ms"
 	description = "VM image size for OCP Application nodes"
 }
+variable "ocp_bastion_host" {
+	description = "Name of the Bastion host used for configuring all nodes with pre-requisite s/w via Ansible"
+}
 variable "ocp_master_host" {
 	description = "Name of the OCP Master node"
 }
@@ -43,6 +46,11 @@ variable "subnet_addr_prefix" {
 variable "ocp_domain_suffix" {
 	description = "Domain suffix for the OCP application domain"
 }
+variable "ocp_app_node_count" {
+	default = 1
+	description = "Number of OpenShift Application nodes to provision"
+}
 variable "ssh_key" {
+	default = "xyz"
 	description = "SSH Public key to be stored on provisioned VMs"
 }
