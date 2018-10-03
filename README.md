@@ -31,6 +31,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    There are two options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
    - **Option A: Azure CLI**
+
      Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
 
      VAR NAME | DEFAULT VALUE | DESCRIPTION
@@ -88,7 +89,11 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    - **Option C: Terraform Configuration Template** 
 
      Use this option to install all Azure infrastructure resources in one Resource Group within a given Virtual Network and Subnet.  With this option, deploying Azure resources to a pre-provisioned (already existing) Virtual Network within another Resource Group is not supported.
-     Terraform binaries should be installed on the machine in which the deployment scripts will be executed. Review the shell scripts in directory `./terraform-deploy`.  These shell scripts can be used to initialize Terraform (`init.sh`), provision (`apply.sh`) and de-provision (`destroy.sh`) Azure infrastructure resources.  All scripts should be executed in directory `./terraform-deploy/azurerm`.  Also, review the Terraform configuration templates before proceeding with deployment.
+
+     Terraform binaries should be installed on the machine in which the deployment scripts will be executed. Review the shell scripts in directory `./terraform-deploy`.  These shell scripts can be used to initialize Terraform (`init.sh`), provision (`apply.sh`) and de-provision (`destroy.sh`) Azure infrastructure resources.  All scripts must be executed in directory `./terraform-deploy/azurerm`.
+
+     Review the Terraform configuration template before proceeding with deployment.  Review the variables defined in file `./terraform-deploy/azurerm/variables.tf` and specify default values as needed.  Update the variables in file `./terraform-deploy/azurerm/variables.tf` with correct values.  
+
      Using the [Azure Portal](https://portal.azure.com) provision an Azure Storage account and create a storage container.  Review and update these values in `./terraform-deploy/azurerm/backend.tfvars` file. 
 
      Description and usage of the shell scripts is provided below.  Open a Linux terminal window to execute the shell scripts.
