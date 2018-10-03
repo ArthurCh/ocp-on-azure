@@ -30,7 +30,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    ```
    There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
-   - **Option A: Azure CLI**
+   - **Option 1: Azure CLI**
 
      Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
 
@@ -66,7 +66,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
 
      ```
 
-   - **Option B: Azure ARM Template**
+   - **Option 2: Azure ARM Template**
 
      Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.parameters.json`` as necessary.
 
@@ -86,7 +86,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
      "resourceGroup": "rh-ocp310-rg"
      ```
 
-   - **Option C: Terraform Configuration Template** 
+   - **Option 3: Terraform Configuration Template** 
 
      Use this option to install all Azure infrastructure resources in one Resource Group within a given Virtual Network and Subnet.  With this option, deploying Azure resources to a pre-provisioned (already existing) Virtual Network within another Resource Group is not supported.
 
