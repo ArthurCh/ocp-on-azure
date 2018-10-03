@@ -8,5 +8,6 @@ export ARM_ACCESS_KEY=$5
 echo "Current working directory => $PWD"
 
 echo "Executing Terraform Destroy ..."
-terraform destroy -auto-approve
+# Provide a dummy value for ssh_key variable!
+terraform destroy -auto-approve -var ssh_key="xyz"
 echo "Done"
