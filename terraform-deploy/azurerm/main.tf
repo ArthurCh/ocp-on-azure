@@ -155,7 +155,7 @@ resource "azurerm_network_security_rule" "ocp_nsg_rule_ck_api" {
 	resource_group_name = "${azurerm_resource_group.ocp_rg.name}"
 	network_security_group_name = "${azurerm_network_security_group.ocp_master_nsg.name}"
 	protocol = "Tcp"
-	priority = 1000
+	priority = 1001
 	direction = "Inbound"
 	source_port_range ="*"
 	destination_port_range = 9090
@@ -185,7 +185,7 @@ resource "azurerm_network_security_rule" "ocp_nsg_rule_app_ssl" {
 	resource_group_name = "${azurerm_resource_group.ocp_rg.name}"
 	network_security_group_name = "${azurerm_network_security_group.ocp_infra_nsg.name}"
 	protocol = "Tcp"
-	priority = 1000
+	priority = 1002
 	direction = "Inbound"
 	source_port_range ="*"
 	destination_port_range = 443
@@ -297,7 +297,7 @@ resource "azurerm_virtual_machine" "ocp_bastion_vm" {
 	}
 	
 	storage_os_disk {
-		name = "ocpdisk1"
+		name = "ocpdisk-bastion"
 		caching = "ReadWrite"
 		create_option = "FromImage"
 		managed_disk_type = "Standard_LRS"
@@ -340,7 +340,7 @@ resource "azurerm_virtual_machine" "ocp_master_vm" {
 	}
 	
 	storage_os_disk {
-		name = "ocpdisk1"
+		name = "ocpdisk-master"
 		caching = "ReadWrite"
 		create_option = "FromImage"
 		managed_disk_type = "Standard_LRS"
@@ -383,7 +383,7 @@ resource "azurerm_virtual_machine" "ocp_infra_vm" {
 	}
 	
 	storage_os_disk {
-		name = "ocpdisk1"
+		name = "ocpdisk-infra"
 		caching = "ReadWrite"
 		create_option = "FromImage"
 		managed_disk_type = "Standard_LRS"
@@ -427,7 +427,7 @@ resource "azurerm_virtual_machine" "ocp_node_vm" {
 	}
 	
 	storage_os_disk {
-		name = "ocpdisk1"
+		name = "ocpdisk-node-${count.index}"
 		caching = "ReadWrite"
 		create_option = "FromImage"
 		managed_disk_type = "Standard_LRS"
