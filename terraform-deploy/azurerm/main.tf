@@ -123,7 +123,7 @@ resource "azurerm_network_security_group" "ocp_infra_nsg" {
 resource "azurerm_network_security_rule" "ocp_nsg_rule_ssh" {
 	name = "ocpSecGroupRuleSsh"
 	resource_group_name = "${azurerm_resource_group.ocp_rg.name}"
-	network_security_group_name = "${azurerm_network_security_group.ocp_master_nsg.name}"
+	network_security_group_name = "${azurerm_network_security_group.ocp_bastion_nsg.name}"
 	protocol = "Tcp"
 	priority = 1000
 	direction = "Inbound"

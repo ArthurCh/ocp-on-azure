@@ -30,7 +30,8 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    ```
    There are two options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
-   - **Option A:** Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
+   - **Option A: Azure CLI**
+     Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
 
      VAR NAME | DEFAULT VALUE | DESCRIPTION
      -------- | ------------- | -----------
@@ -64,7 +65,9 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
 
      ```
 
-   - **Option B:** Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.parameters.json`` as necessary.
+   - **Option B: Azure ARM Template**
+
+     Review the parameters (in the *parameters:* section) and their default values in the Azure ARM template file ``scripts/provision-vms.json``.  Update the parameter values in the file ``scripts/vms.parameters.json`` as necessary.
 
      Open a terminal window and run the following CLI command to provision all required infrastructure resources on Azure.
      ```
@@ -81,6 +84,51 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
      },
      "resourceGroup": "rh-ocp310-rg"
      ```
+
+   - **Option C: Terraform Configuration Template** 
+
+     Use this option to install all Azure infrastructure resources in one Resource Group within a given Virtual Network and Subnet.  With this option, deploying Azure resources to a pre-provisioned (already existing) Virtual Network within another Resource Group is not supported.
+     Terraform binaries should be installed on the machine in which the deployment scripts will be executed. Review the shell scripts in directory `./terraform-deploy`.  These shell scripts can be used to initialize Terraform (`init.sh`), provision (`apply.sh`) and de-provision (`destroy.sh`) Azure infrastructure resources.  All scripts should be executed in directory `./terraform-deploy/azurerm`.  Also, review the Terraform configuration templates before proceeding with deployment.
+     Using the [Azure Portal](https://portal.azure.com) provision an Azure Storage account and create a storage container.  Review and update these values in `./terraform-deploy/azurerm/backend.tfvars` file. 
+
+     Description and usage of the shell scripts is provided below.  Open a Linux terminal window to execute the shell scripts.
+     - `init.sh`
+
+       Initialize Terraform.  See below.
+
+       ```
+       $ cd ./terraform-deploy/azurerm
+       $ ./init.sh ARG1 ARG2 ARG3 ARG4 ARG5
+       ```
+       Substitute the correct values for arguments as described in the table below.
+       
+       ARGUMENTS | DESCRIPTION
+       ------- | -----------
+       ARG1 | Azure Service Principal *App ID*
+       ARG2 | Azure Service Principal *Password*
+       ARG3 | Azure Subscription
+       ARG4 | Azure AD Tenant
+       ARG5 | Azure Storage Account access key
+
+     - `apply.sh`
+
+       Provision Azure resources.  See below.
+
+       ```
+       $ cd ./terraform-deploy/azurerm
+       $ ./apply.sh ARG1 ARG2 ARG3 ARG4 ARG5 ARG6
+       ```
+       Specify the location of the SSH Public Key (eg., ~/.ssh/id_rsa.pub) and pass it as argument 6 (ARG6) in the command above.  The first five argument values are exactly the same as the `init.sh` script.
+
+     - `destroy.sh`
+
+       De-provision (destroy) all Azure resources.  See below.
+
+       ```
+       $ cd ./terraform-deploy/azurerm
+       $ ./destroy.sh ARG1 ARG2 ARG3 ARG4 ARG5
+       ```
+       The argument values are the same as the `init.sh` script.
 
 2. Retrieve the subscription ID for your Azure account.  Note down the values for **id** (Subscription ID) and **tenantId** (AD Tenant ID) from the command output.  Save the values in a file.
    ```
