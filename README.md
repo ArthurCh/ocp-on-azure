@@ -28,7 +28,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    # Switch directory
    $ cd ocp-on-azure
    ```
-   There are two options for provisioning the infrastructure resources on Azure.  Use one of the options below.
+   There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.
 
    - **Option A: Azure CLI**
 
