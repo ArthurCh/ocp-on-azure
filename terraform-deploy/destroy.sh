@@ -10,4 +10,8 @@ echo "Current working directory => $PWD"
 echo "Executing Terraform Destroy ..."
 # Provide a dummy value for ssh_key variable!
 terraform destroy -auto-approve
-echo "Done"
+if [ "$ecode" -ne 0 ]; then
+	echo "Terraform Apply failed!"
+	exit 1 # terminate and indicate error
+fi
+echo "Success"

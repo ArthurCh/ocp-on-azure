@@ -12,5 +12,9 @@ echo "Dir list => "
 ls -l
 
 echo "Executing Terraform Apply ..."
-terraform apply -auto-approve -var ssh_key="$6"
-echo "Done"
+ecode = terraform apply -auto-approve -var ssh_key="$6"
+if [ "$ecode" -ne 0 ]; then
+	echo "Terraform Apply failed!"
+	exit 1 # terminate and indicate error
+fi
+echo "Success"
