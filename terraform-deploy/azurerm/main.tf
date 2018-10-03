@@ -411,7 +411,7 @@ resource "azurerm_virtual_machine" "ocp_infra_vm" {
 }
 
 resource "azurerm_virtual_machine" "ocp_node_vm" {
-	name = "ocp-node-${count.index}.${var.ocp_domain_suffix}"
+	name = "ocp-node${count.index}.${var.ocp_domain_suffix}"
 	location = "${azurerm_resource_group.ocp_rg.location}"
 	resource_group_name = "${azurerm_resource_group.ocp_rg.name}"
 	network_interface_ids = ["${azurerm_network_interface.ocp_app_nic.*.id[count.index]}"]
@@ -427,14 +427,14 @@ resource "azurerm_virtual_machine" "ocp_node_vm" {
 	}
 	
 	storage_os_disk {
-		name = "ocpdisk-node-${count.index}"
+		name = "ocpdisk-node${count.index}"
 		caching = "ReadWrite"
 		create_option = "FromImage"
 		managed_disk_type = "Standard_LRS"
 	}
 
 	os_profile {
-		computer_name = "ocp-node-${count.index}.${var.ocp_domain_suffix}"
+		computer_name = "ocp-node${count.index}.${var.ocp_domain_suffix}"
 		admin_username = "ocpuser"
 		# admin_password = "openshift310"
 	}
