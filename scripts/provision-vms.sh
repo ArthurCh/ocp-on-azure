@@ -8,13 +8,13 @@
 set -e
 
 if [ $# -ne 3 ]; then
-  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <SSH Public Key>"
-  echo -e "\tMissing argument : No. of OCP nodes or SSH Public Key!\n"
+  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <Azure Uname> <Password>"
+  echo -e "\tMissing argument : No. of OCP nodes, Azure username or password!\n"
   exit 1
 fi
 
 # Configure the env. variables
-#. set-env.sh
+. set-env.sh
 
 # IMPORTANT:  Review and configure the following variables before running this script!!
 if [ -z $OCP_RG_NAME ]
