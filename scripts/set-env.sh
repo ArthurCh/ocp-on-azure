@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export SSH_PUBLIC_KEY=$1
+echo "set-env.sh : SSH_PUBLIC_KEY=$SSH_PUBLIC_KEY"
 
 export OCP_RG_NAME="rh-ocp310-rg"
 echo "set-env.sh : OCP_RG_NAME=$OCP_RG_NAME"
