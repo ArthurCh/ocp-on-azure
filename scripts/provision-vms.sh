@@ -14,7 +14,7 @@ if [ $# -ne 3 ]; then
 fi
 
 # Configure the env. variables
-. scripts/set-env.sh
+. ./set-env.sh
 
 # IMPORTANT:  Review and configure the following variables before running this script!!
 if [ -z $OCP_RG_NAME ]
