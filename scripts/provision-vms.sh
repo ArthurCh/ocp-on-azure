@@ -7,7 +7,7 @@
 
 set -e
 
-if [ $# -ne 2 ]; then
+if [ $# -ne 4 ]; then
   echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <SSH Public Key>"
   echo -e "\tMissing argument : No. of OCP nodes or SSH Public Key!\n"
   exit 1
