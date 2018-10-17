@@ -7,11 +7,14 @@
 
 set -e
 
-if [ $# -le 0 ]; then
-  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes>"
-  echo -e "\tMissing argument : No. of OCP nodes!\n"
+if [ $# -ne 2 ]; then
+  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <SSH Public Key>"
+  echo -e "\tMissing argument : No. of OCP nodes or SSH Public Key!\n"
   exit 1
 fi
+
+# Configure the env. variables
+. set-env.sh $2
 
 # IMPORTANT:  Review and configure the following variables before running this script!!
 if [ -z $OCP_RG_NAME ]
@@ -106,6 +109,10 @@ fi
 echo "Setting OCP_DOMAIN_SUFFIX=$OCP_DOMAIN_SUFFIX"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
+
+# Login to the Azure account
+echo "Logging to the Azure account"
+az login -u $3 -p $4
 
 # Set the default location for all resources
 echo "Setting the default location to $RG_LOCATION ..."
