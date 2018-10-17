@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export SSH_PUBLIC_KEY=$1
+
 export OCP_RG_NAME="rh-ocp310-rg"
 echo "set-env.sh : OCP_RG_NAME=$OCP_RG_NAME"
 export IMAGE_SIZE_MASTER="Standard_B1ms"
