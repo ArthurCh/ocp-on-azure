@@ -3,6 +3,7 @@
 # Notes:
 # ID06102018: Created by ganesh.radhakrishnan@microsoft.com
 # ID06272018: Updated script to allow creating OCP VM's in a separate subnet within an existing VNET
+# ID10172018: Updated script to use env variables.  If an env variable value is set then skip setting it in this script else set the default value.
 
 set -e
 
@@ -13,24 +14,96 @@ if [ $# -le 0 ]; then
 fi
 
 # IMPORTANT:  Review and configure the following variables before running this script!!
-OCP_RG_NAME="rh-ocp39-rg"
-RG_LOCATION="westus"
-RG_TAGS="CreatedBy=`whoami`"
-KEY_VAULT_NAME="OCP-Key-Vault"
-IMAGE_SIZE_MASTER="Standard_B2ms"
-IMAGE_SIZE_NODE="Standard_B2ms"
-IMAGE_SIZE_INFRA="Standard_B2ms"
-VM_IMAGE="RedHat:RHEL:7-RAW:latest"
-BASTION_HOST="ocp-bastion"
-OCP_MASTER_HOST="ocp-master"
-OCP_INFRA_HOST="ocp-infra"
-VNET_RG_NAME="rh-ocp39-rg"
-VNET_CREATE="Yes"
-VNET_NAME="ocp39Vnet"
-VNET_ADDR_PREFIX="192.168.0.0/16"
-SUBNET_NAME="ocp39Subnet"
-SUBNET_ADDR_PREFIX="192.168.122.0/24"
-OCP_DOMAIN_SUFFIX="devcls.com"
+if [ -z $OCP_RG_NAME ]
+then
+  OCP_RG_NAME="rh-ocp39-rg"
+fi
+echo "Setting OCP_RG_NAME=$OCP_RG_NAME"
+if [ -z $RG_LOCATION ]
+then
+  RG_LOCATION="westus"
+fi
+echo "Setting RG_LOCATION=$RG_LOCATION"
+if [ -z "$RG_TAGS" ]
+then
+  RG_TAGS="CreatedBy=`whoami`"
+fi
+echo "Setting RG_TAGS=$RG_TAGS"
+if [ -z $KEY_VAULT_NAME ]
+then
+  KEY_VAULT_NAME="OCP-Key-Vault"
+fi
+echo "Setting KEY_VAULT_NAME=$KEY_VAULT_NAME"
+if [ -z $IMAGE_SIZE_MASTER ]
+then
+  IMAGE_SIZE_MASTER="Standard_B2ms"
+fi
+echo "Setting IMAGE_SIZE_MASTER=$IMAGE_SIZE_MASTER"
+if [ -z $IMAGE_SIZE_NODE ]
+then
+  IMAGE_SIZE_NODE="Standard_B2ms"
+fi
+echo "Setting IMAGE_SIZE_NODE=$IMAGE_SIZE_NODE"
+if [ -z $IMAGE_SIZE_INFRA ]
+then
+  IMAGE_SIZE_INFRA="Standard_B2ms"
+fi
+echo "Setting IMAGE_SIZE_INFRA=$IMAGE_SIZE_INFRA"
+if [ -z $VM_IMAGE ]
+then
+  VM_IMAGE="RedHat:RHEL:7-RAW:latest"
+fi
+echo "Setting VM_IMAGE=$VM_IMAGE"
+if [ -z $BASTION_HOST ]
+then
+  BASTION_HOST="ocp-bastion"
+fi
+echo "Setting BASTION_HOST=$BASTION_HOST"
+if [ -z $OCP_MASTER_HOST ]
+then
+  OCP_MASTER_HOST="ocp-master"
+fi
+echo "Setting OCP_MASTER_HOST=$OCP_MASTER_HOST"
+if [ -z $OCP_INFRA_HOST ]
+then
+  OCP_INFRA_HOST="ocp-infra"
+fi
+echo "Setting OCP_INFRA_HOST=$OCP_INFRA_HOST"
+if [ -z $VNET_RG_NAME ]
+then
+  VNET_RG_NAME="rh-ocp39-rg"
+fi
+echo "Setting VNET_RG_NAME=$VNET_RG_NAME"
+if [ -z $VNET_CREATE ]
+then
+  VNET_CREATE="Yes"
+fi
+echo "Setting VNET_CREATE=$VNET_CREATE"
+if [ -z $VNET_NAME ]
+then
+  VNET_NAME="ocp39Vnet"
+fi
+echo "Setting VNET_NAME=$VNET_NAME"
+if [ -z $VNET_ADDR_PREFIX ]
+then
+  VNET_ADDR_PREFIX="192.168.0.0/16"
+fi
+echo "Setting VNET_ADDR_PREFIX=$VNET_ADDR_PREFIX"
+if [ -z $SUBNET_NAME ]
+then
+  SUBNET_NAME="ocp39Subnet"
+fi
+echo "Setting SUBNET_NAME=$SUBNET_NAME"
+if [ -z $SUBNET_ADDR_PREFIX ]
+then
+  SUBNET_ADDR_PREFIX="192.168.122.0/24"
+fi
+echo "Setting SUBNET_ADDR_PREFIX=$SUBNET_ADDR_PREFIX"
+if [ -z $OCP_DOMAIN_SUFFIX ]
+then
+  OCP_DOMAIN_SUFFIX="devcls.com"
+fi
+echo "Setting OCP_DOMAIN_SUFFIX=$OCP_DOMAIN_SUFFIX"
 
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 
@@ -45,7 +118,9 @@ az group create --name $OCP_RG_NAME --location $RG_LOCATION --tags $RG_TAGS
 # Create a key vault and store the ssh private key as a secret. This will allow us to retrieve the SSH private key at a later time (if needed).
 echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment true
-az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
+#az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
+# ID10172018: Set the value of SSH_PUBLIC_KEY env. variable!
+az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --value $SSH_PUBLIC_KEY
 
 if [ "$VNET_CREATE" ]; then
 	# Create the VNET and Subnet
@@ -143,8 +218,9 @@ do
   i=$(( $i + 1 ))
 done
 
-# Copy the SSH private key to the Bastion host
-echo "Copying SSH private key to Bastion host..."
-scp ~/.ssh/id_rsa "ocpuser@$BASTION_HOST.$RG_LOCATION.cloudapp.azure.com:/home/ocpuser/.ssh"
+# Copy the SSH private key to the Bastion host.
+# ID10172018: Copy the public key manually to the Bastion host.
+#echo "Copying SSH private key to Bastion host..."
+#scp ~/.ssh/id_rsa "ocpuser@$BASTION_HOST.$RG_LOCATION.cloudapp.azure.com:/home/ocpuser/.ssh"
 
 echo "All OCP infrastructure resources created OK."
