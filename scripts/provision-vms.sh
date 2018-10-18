@@ -7,17 +7,17 @@
 
 set -e
 
-#if [ $# -le 4 ]; then
-  echo -e "Argument count = $#"
-#  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <Azure Uname> <Password>"
-#  echo -e "\tMissing argument : No. of OCP nodes, Azure username or password!\n"
-#  exit 1
-#else
+echo -e "Argument count = $#"
+if [ $# -ne 4 ]; then
+  echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <Azure Uname> <Password> <SSH_PUBLIC_KEY>"
+  echo -e "\tMissing argument : No. of OCP nodes, Azure username, password or ssh key!\n"
+  exit 1
+else
   echo "No. of App Nodes=$1"
   echo "Azure Uname=$2"
   echo "Azure uname Password=$3"
   echo "ssh-public-key=$4"
-#fi
+fi
 
 # Configure the env. variables
 #. ./set-env.sh
