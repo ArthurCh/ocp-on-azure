@@ -7,19 +7,19 @@
 
 set -e
 
-if [ $# -ne 3 ]; then
+if [ $# -ne 4 ]; then
   echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <Azure Uname> <Password>"
   echo -e "\tMissing argument : No. of OCP nodes, Azure username or password!\n"
   exit 1
 fi
 
 # Configure the env. variables
-. ./set-env.sh
+#. ./set-env.sh
 
 # IMPORTANT:  Review and configure the following variables before running this script!!
 if [ -z $OCP_RG_NAME ]
 then
-  OCP_RG_NAME="rh-ocp39-rg"
+  OCP_RG_NAME="rh-ocp310-rg"
 fi
 echo "Setting OCP_RG_NAME=$OCP_RG_NAME"
 if [ -z $RG_LOCATION ]
@@ -29,27 +29,27 @@ fi
 echo "Setting RG_LOCATION=$RG_LOCATION"
 if [ -z "$RG_TAGS" ]
 then
-  RG_TAGS="CreatedBy=`whoami`"
+  RG_TAGS="CreatedBy=garadha"
 fi
 echo "Setting RG_TAGS=$RG_TAGS"
 if [ -z $KEY_VAULT_NAME ]
 then
-  KEY_VAULT_NAME="OCP-Key-Vault"
+  KEY_VAULT_NAME="OCP-310-KV"
 fi
 echo "Setting KEY_VAULT_NAME=$KEY_VAULT_NAME"
 if [ -z $IMAGE_SIZE_MASTER ]
 then
-  IMAGE_SIZE_MASTER="Standard_B2ms"
+  IMAGE_SIZE_MASTER="Standard_B1ms"
 fi
 echo "Setting IMAGE_SIZE_MASTER=$IMAGE_SIZE_MASTER"
 if [ -z $IMAGE_SIZE_NODE ]
 then
-  IMAGE_SIZE_NODE="Standard_B2ms"
+  IMAGE_SIZE_NODE="Standard_B1ms"
 fi
 echo "Setting IMAGE_SIZE_NODE=$IMAGE_SIZE_NODE"
 if [ -z $IMAGE_SIZE_INFRA ]
 then
-  IMAGE_SIZE_INFRA="Standard_B2ms"
+  IMAGE_SIZE_INFRA="Standard_B1ms"
 fi
 echo "Setting IMAGE_SIZE_INFRA=$IMAGE_SIZE_INFRA"
 if [ -z $VM_IMAGE ]
@@ -74,7 +74,7 @@ fi
 echo "Setting OCP_INFRA_HOST=$OCP_INFRA_HOST"
 if [ -z $VNET_RG_NAME ]
 then
-  VNET_RG_NAME="rh-ocp39-rg"
+  VNET_RG_NAME="rh-ocp310-rg"
 fi
 echo "Setting VNET_RG_NAME=$VNET_RG_NAME"
 if [ -z $VNET_CREATE ]
@@ -84,7 +84,7 @@ fi
 echo "Setting VNET_CREATE=$VNET_CREATE"
 if [ -z $VNET_NAME ]
 then
-  VNET_NAME="ocp39Vnet"
+  VNET_NAME="ocp310Vnet"
 fi
 echo "Setting VNET_NAME=$VNET_NAME"
 if [ -z $VNET_ADDR_PREFIX ]
@@ -94,7 +94,7 @@ fi
 echo "Setting VNET_ADDR_PREFIX=$VNET_ADDR_PREFIX"
 if [ -z $SUBNET_NAME ]
 then
-  SUBNET_NAME="ocp39Subnet"
+  SUBNET_NAME="ocp310Subnet"
 fi
 echo "Setting SUBNET_NAME=$SUBNET_NAME"
 if [ -z $SUBNET_ADDR_PREFIX ]
@@ -111,7 +111,7 @@ echo "Setting OCP_DOMAIN_SUFFIX=$OCP_DOMAIN_SUFFIX"
 echo "Provisioning Azure resources for OpenShift CP non-HA cluster..."
 
 # Login to the Azure account
-echo "Logging to the Azure account"
+echo "Logging-in to the Azure account"
 az login -u $2 -p $3
 
 # Set the default location for all resources
@@ -127,7 +127,7 @@ echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment true
 #az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
 # ID10172018: Set the value of SSH_PUBLIC_KEY env. variable!
-az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --value $SSH_PUBLIC_KEY
+az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --value "$SSH_PUBLIC_KEY"
 
 if [ "$VNET_CREATE" ]; then
 	# Create the VNET and Subnet
