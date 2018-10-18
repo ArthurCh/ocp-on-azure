@@ -7,7 +7,7 @@
 
 set -e
 
-if [ $# -ne 4 ]; then
+if [ $# -le 4 ]; then
   echo -e "\n\tUsage: provision-vms.sh <NO. of OCP Nodes> <Azure Uname> <Password>"
   echo -e "\tMissing argument : No. of OCP nodes, Azure username or password!\n"
   exit 1
@@ -127,7 +127,7 @@ echo "Creating Azure key vault $KEY_VAULT_NAME ..."
 az keyvault create --resource-group $OCP_RG_NAME --name $KEY_VAULT_NAME -l $RG_LOCATION --enabled-for-deployment true
 #az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --file ~/.ssh/id_rsa
 # ID10172018: Set the value of SSH_PUBLIC_KEY env. variable!
-az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --value "$SSH_PUBLIC_KEY"
+az keyvault secret set --vault-name $KEY_VAULT_NAME -n ocpNodeKey --value "$4"
 
 if [ "$VNET_CREATE" ]; then
 	# Create the VNET and Subnet
