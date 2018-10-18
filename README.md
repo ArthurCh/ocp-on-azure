@@ -9,6 +9,7 @@ Use the artifacts in this project to deploy a multi-node non-HA OpenShift CP clu
 - [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) installed on a workstation/PC 
 - An Azure user account with "Owner" role permissions at the **Subscription** level.
 - Access to a Windows or Linux terminal window.  You **must** be logged into to your Azure account via the CLI before proceeding with the next steps.
+- (Optional) Azure DevOps account.  
 
 This project assumes readers have prior experience installing Red Hat OpenShift Container Platform and/or have gone thru the installation chapters in the OpenShift documentation.  As such, OpenShift exposes multiple parameters (Ansible variables) for configuring different sub-systems and various aspects of those sub-systems.  To review and/or get a deeper understanding of all the configuration options, refer to the **Installing Clusters** chapter in the [OpenShift Documentation](https://docs.openshift.com/).
 
@@ -28,7 +29,7 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    # Switch directory
    $ cd ocp-on-azure
    ```
-   There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.
+   There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.  Additionally, if you have an Azure DevOps account, you can easily build **Release** pipelines in Azure DevOps to provision infrastructure resources on Azure using any one of these options.
 
    - **Option 1: Azure CLI**
 
