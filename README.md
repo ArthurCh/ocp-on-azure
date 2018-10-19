@@ -29,11 +29,11 @@ This project assumes readers have prior experience installing Red Hat OpenShift 
    # Switch directory
    $ cd ocp-on-azure
    ```
-   There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.  Additionally, if you have an Azure DevOps account, you can easily build **Release** pipelines in Azure DevOps to provision infrastructure resources on Azure using any one of these options.
+   There are three options for provisioning the infrastructure resources on Azure.  Use one of the options below.  Additionally, if you have an Azure DevOps account, you can easily build **Release** pipelines in Azure DevOps to automate the provisioning of infrastructure resources on Azure using any one of these options.
 
    - **Option 1: Azure CLI**
 
-     Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary.  See below.
+     Review and update the following variables in the script ``scripts/provision-vms.sh`` as necessary. Alternatively, configure these *Environment* variables to appropriate values before running the shell script.  See below.
 
      VAR NAME | DEFAULT VALUE | DESCRIPTION
      -------- | ------------- | -----------
